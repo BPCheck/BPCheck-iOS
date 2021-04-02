@@ -1,0 +1,6 @@
+framework module Pods_BPCheck {
+  umbrella header "Pods-BPCheck-umbrella.h"
+
+  export *
+  module * { export * }
+}
