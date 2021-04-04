@@ -13,7 +13,7 @@ extension UITextField {
         keyboardType = UIKeyboardType.default
         returnKeyType = UIReturnKeyType.done
         autocorrectionType = UITextAutocorrectionType.no
-        font = UIFont.systemFont(ofSize: 13)
+        font = UIFont.systemFont(ofSize: 15)
         borderStyle = UITextField.BorderStyle.roundedRect
         clearButtonMode = UITextField.ViewMode.whileEditing;
         contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
