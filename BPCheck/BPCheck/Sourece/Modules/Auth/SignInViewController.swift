@@ -58,9 +58,9 @@ class SignInViewController: UIViewController {
         bind(reactor: reactor)
         
         signUpBtn.rx.tap.subscribe(onNext: {[unowned self] _ in
-            let vc = storyboard?.instantiateViewController(identifier: "signup") as! SignUpViewController
-            present(vc, animated: true, completion: nil)
+            pushViewController("signup")
         }).disposed(by: disposeBag)
+        navigationController?.navigationBar.topItem?.title = "로그인"
     }
     
     func bind(reactor: SignInReactor) {
@@ -85,13 +85,14 @@ class SignInViewController: UIViewController {
             .map { $0.result }
             .filter { $0 != nil}
             .subscribe(onNext: {[unowned self] error in
-                self.showAlert(error!)
+                showAlert(error!)
             }).disposed(by: disposeBag)
 
         reactor.state
             .map { $0.complete }
             .subscribe(onNext: {[unowned self]  success in
-                if success { self.showAlert("Main") }
+                print(success)
+                if success { showAlert("Main") }
             }).disposed(by: disposeBag)
 
         reactor.state
