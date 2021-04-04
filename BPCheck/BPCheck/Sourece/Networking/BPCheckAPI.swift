@@ -25,7 +25,7 @@ enum BPCheckAPI {
 
 extension BPCheckAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://127.0.0.1")!
+        return URL(string: "http://127.0.0.1:3000")!
     }
     
     var path: String {
@@ -95,4 +95,19 @@ extension BPCheckAPI: TargetType {
             return nil
         }
     }
+}
+
+//guard let token = UserDefaults.standard.string(forKey: "token") else { return nil }
+//print(token)
+//return ["Authorization" : "Bearer " + token]
+
+enum StatusRules: Int {
+    case ok = 200
+    case badRequest = 400
+    case unauthorized = 401
+    case forbidden = 403
+    case notFound = 404
+    case conflict = 409
+    case serverError = 500
+    case fail = 0
 }
