@@ -8,6 +8,9 @@
 import UIKit
 import SnapKit
 import Then
+import ReactorKit
+import RxSwift
+import RxCocoa
 
 class SignInViewController: UIViewController {
     
@@ -16,13 +19,13 @@ class SignInViewController: UIViewController {
     }
     
     private let idTextField = UITextField().then {
+        $0.defaultRoundTextField()
         $0.placeholder = "아이디"
-        $0.layer.cornerRadius = 20
     }
     
     private let pwTextField = UITextField().then {
+        $0.defaultRoundTextField()
         $0.placeholder = "비밀번호"
-        $0.layer.cornerRadius = 20
         $0.isSecureTextEntry = true
     }
     
@@ -39,6 +42,9 @@ class SignInViewController: UIViewController {
         $0.setTitleColor(.gray, for: .normal)
     }
     
+    private let disposeBag = DisposeBag()
+    private let reactor = SignInReactor()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,13 +55,56 @@ class SignInViewController: UIViewController {
         view.addSubview(signUpBtn)
         
         setupConstraint()
+        bind(reactor: reactor)
+        
+        signUpBtn.rx.tap.subscribe(onNext: {[unowned self] _ in
+            let vc = storyboard?.instantiateViewController(identifier: "signup") as! SignUpViewController
+            present(vc, animated: true, completion: nil)
+        }).disposed(by: disposeBag)
+    }
+    
+    func bind(reactor: SignInReactor) {
+        //action
+        idTextField.rx.text.orEmpty.map{
+            SignInReactor.Action.id($0)
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        pwTextField.rx.text.orEmpty.map{
+            SignInReactor.Action.pw($0)
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        signInBtn.rx.tap
+            .map{ SignInReactor.Action.doneTap }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        //state
+        reactor.state
+            .map { $0.result }
+            .filter { $0 != nil}
+            .subscribe(onNext: {[unowned self] error in
+                self.showAlert(error!)
+            }).disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.complete }
+            .subscribe(onNext: {[unowned self]  success in
+                if success { self.showAlert("Main") }
+            }).disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.isEnable }
+            .bind(to: signInBtn.rx.isEnabled )
+            .disposed(by: disposeBag)
     }
 
     private func setupConstraint() {
         logoView.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.top.equalTo(view.frame.height / 8)
-            make.width.height.equalTo(110)
+            make.width.equalTo(110)
         }
         
         idTextField.snp.makeConstraints { (make) in
