@@ -15,6 +15,7 @@ pod 'SnapKit', '~> 5.0.0'
 pod 'Then'
 pod 'SwiftDate'
 pod 'ReactorKit'
+pod 'PanModal'
 
   # Pods for BPCheck
 

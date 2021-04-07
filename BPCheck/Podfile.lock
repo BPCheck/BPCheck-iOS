@@ -10,6 +10,7 @@ PODS:
   - Moya/RxSwift (14.0.0):
     - Moya/Core
     - RxSwift (~> 5.0)
+  - PanModal (1.2.7)
   - ReactorKit (2.1.1):
     - RxSwift (~> 5.0)
     - WeakMapTable (~> 1.1)
@@ -29,6 +30,7 @@ DEPENDENCIES:
   - Charts
   - Moya (~> 14.0)
   - Moya/RxSwift (~> 14.0)
+  - PanModal
   - ReactorKit
   - RxCocoa (~> 5)
   - RxSwift (~> 5)
@@ -41,6 +43,7 @@ SPEC REPOS:
     - Alamofire
     - Charts
     - Moya
+    - PanModal
     - ReactorKit
     - RxCocoa
     - RxRelay
@@ -54,6 +57,7 @@ SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   Charts: b1e3a1f5a1c9ba5394438ca3b91bd8c9076310af
   Moya: 5b45dacb75adb009f97fde91c204c1e565d31916
+  PanModal: 3e16ead1a907fb06f4df3f13492fd00149fa4974
   ReactorKit: 6d894a20c3d508344320901cd8e386fde92df4b6
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
@@ -63,6 +67,6 @@ SPEC CHECKSUMS:
   Then: acfe0be7e98221c6204e12f8161459606d5d822d
   WeakMapTable: 05c694ce8439a7a9ebabb56187287a63c57673d6
 
-PODFILE CHECKSUM: ea20f5df39f341441488bbb6361d1e93f19f4e23
+PODFILE CHECKSUM: 7d6b71c9ab40541918dca73cf1a32673e26e6375
 
 COCOAPODS: 1.10.1
