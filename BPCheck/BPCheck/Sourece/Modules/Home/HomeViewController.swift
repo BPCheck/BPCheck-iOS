@@ -7,7 +7,10 @@
 
 import UIKit
 import SnapKit
+import PanModal
 import Then
+import RxSwift
+import RxCocoa
 
 class HomeViewController: UIViewController {
 
@@ -56,6 +59,8 @@ class HomeViewController: UIViewController {
         $0.textColor = .white
     }
     
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,7 +74,12 @@ class HomeViewController: UIViewController {
         view.addSubview(feedLabel)
         
         setupConstraint()
-        // Do any additional setup after loading the view.
+        
+        updateButton.rx.tap.subscribe(onNext: {[unowned self] _ in
+            let vc = storyboard?.instantiateViewController(identifier: "post") as! PostViewController
+            presentPanModal(vc)
+        }).disposed(by: disposeBag)
+        
     }
     
     private func setupConstraint() {
@@ -127,6 +137,7 @@ class HomeViewController: UIViewController {
             make.top.equalTo(bpLowView.snp.bottom).offset(50)
         }
     }
+
 
     /*
     // MARK: - Navigation
