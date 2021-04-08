@@ -1,0 +1,6 @@
+framework module MSBBarChart {
+  umbrella header "MSBBarChart-umbrella.h"
+
+  export *
+  module * { export * }
+}
