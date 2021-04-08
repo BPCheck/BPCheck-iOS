@@ -6,16 +6,28 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class HospitalViewController: UIViewController {
 
+    private let hospitalTableView = UITableView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        view.addSubview(hospitalTableView)
+        setupConstraint()
     }
     
-
+    private func setupConstraint() {
+        hospitalTableView.snp.makeConstraints { (make) in
+            make.top.equalTo(view.snp.top)
+            make.leading.equalTo(view)
+            make.trailing.equalTo(view)
+            make.bottom.equalTo(view.snp.bottom)
+        }
+    }
     /*
     // MARK: - Navigation
 
