@@ -53,6 +53,7 @@ class PostViewController: UIViewController {
     }
     private let datePickerView = UIDatePicker().then {
         $0.datePickerMode = .date
+        $0.preferredDatePickerStyle = .wheels
     }
     private var counter = [String]()
     
@@ -133,6 +134,7 @@ class PostViewController: UIViewController {
             make.leading.equalTo(pulsePickerView.snp.leading)
             make.trailing.lessThanOrEqualTo(view.snp.trailing).offset(-45)
             make.height.equalTo(50)
+            make.width.equalTo(240)
         }
         
         updateButton.snp.makeConstraints { (make) in
