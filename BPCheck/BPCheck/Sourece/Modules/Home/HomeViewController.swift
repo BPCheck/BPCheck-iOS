@@ -11,6 +11,7 @@ import PanModal
 import Then
 import RxSwift
 import RxCocoa
+import ReactorKit
 
 class HomeViewController: UIViewController {
 
@@ -19,24 +20,26 @@ class HomeViewController: UIViewController {
     }
     
     private let bpHighView = MainFeedView().then {
-        $0.titleLabel.text = "최고"
+        $0.textLabel.text = "최고"
         $0.iconLabel.image = UIImage(named: "high")
         $0.contentLabel.text = "12"
-
     }
     
     private let bpLowView = MainFeedView().then {
-        $0.titleLabel.text = "최저"
+        $0.textLabel.text = "최저"
         $0.iconLabel.image = UIImage(named: "low")
         $0.contentLabel.text = "100"
     }
     
     private let pulseView = MainFeedView().then {
-        $0.titleLabel.text = "맥박"
+        $0.textLabel.text = "맥박"
     }
     
     private let dateView = MainFeedView().then {
-        $0.titleLabel.text = "날짜"
+        $0.textLabel.text = "날짜"
+        $0.contentLabel.adjustsFontSizeToFitWidth = true
+        $0.contentLabel.numberOfLines = 1
+        $0.contentLabel.minimumScaleFactor = 0.5
     }
     
     private let updateButton = UIButton().then {
@@ -49,7 +52,7 @@ class HomeViewController: UIViewController {
     }
     
     private let hospitalView = MainFeedView().then {
-        $0.titleLabel.text = "지정 병원"
+        $0.textLabel.text = "지정 병원"
         $0.contentLabel.font = UIFont.systemFont(ofSize: 30)
     }
 
@@ -60,6 +63,8 @@ class HomeViewController: UIViewController {
     }
     
     private let disposeBag = DisposeBag()
+    private let reactor = HomeReactor()
+    private let loadData = PublishRelay<Void>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,12 +79,48 @@ class HomeViewController: UIViewController {
         view.addSubview(feedLabel)
         
         setupConstraint()
+        managerTrait()
+        bind(reactor: reactor)
+        loadData.accept(())
+    }
+    
+    func bind(reactor: HomeReactor) {
+        loadData.map {
+            HomeReactor.Action.refresh
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
         
+        reactor.state
+            .map { $0.main }
+            .bind {[unowned self] data in
+                guard let data = data else { return }
+                bpHighView.contentLabel.text = data.main.bps[0].highBp
+                bpLowView.contentLabel.text = data.main.bps[0].lowBp
+                pulseView.contentLabel.text = data.main.bps[0].pulse
+                hospitalView.contentLabel.text = data.main.hospitals[0].hospitalName
+                dateView.contentLabel.text = data.main.bps[0].date
+            }.disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.result }
+            .subscribe(onNext: { message in
+                print(message)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func managerTrait() {
         updateButton.rx.tap.subscribe(onNext: {[unowned self] _ in
             let vc = storyboard?.instantiateViewController(identifier: "post") as! PostViewController
             presentPanModal(vc)
         }).disposed(by: disposeBag)
         
+        bpLowView.rx.tap.subscribe(onNext: {[unowned self] _ in
+            pushViewController("low")
+        }).disposed(by: disposeBag)
+        
+        bpHighView.rx.tap.subscribe(onNext: {[unowned self] _ in
+            pushViewController("high")
+        }).disposed(by: disposeBag)
     }
     
     private func setupConstraint() {
