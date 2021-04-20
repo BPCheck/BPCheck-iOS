@@ -8,9 +8,9 @@
 import UIKit
 import SnapKit
 
-class MainFeedView: UIView {
+class MainFeedView: UIButton {
     
-    let titleLabel = UILabel().then {
+    let textLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 27)
     }
     
@@ -31,7 +31,7 @@ class MainFeedView: UIView {
         
         backgroundColor = .white
         
-        addSubview(titleLabel)
+        addSubview(textLabel)
         addSubview(contentLabel)
         addSubview(iconLabel)
     }
@@ -43,15 +43,16 @@ class MainFeedView: UIView {
     override func updateConstraints() {
         super.updateConstraints()
         
-        titleLabel.snp.makeConstraints { (make) in
+        textLabel.snp.makeConstraints { (make) in
             make.top.equalTo(snp.top).offset(20)
             make.leading.equalTo(snp.leading).offset(30)
         }
         
         contentLabel.snp.makeConstraints { (make) in
             make.leading.lessThanOrEqualTo(snp.leading).offset(84)
-            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.top.equalTo(textLabel.snp.bottom).offset(10)
             make.trailing.lessThanOrEqualTo(snp.trailing).offset(-10)
+            make.width.lessThanOrEqualTo(150)
         }
         
         iconLabel.snp.makeConstraints { (make) in
