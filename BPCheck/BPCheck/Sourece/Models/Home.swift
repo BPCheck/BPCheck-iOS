@@ -11,7 +11,7 @@ struct Home: Codable {
     let userId: String
     let password: String
     let name: String
-    let hospitals: Hospital
+    let hospitals: [Hospital]
     let bps: [Bp]
 }
 
