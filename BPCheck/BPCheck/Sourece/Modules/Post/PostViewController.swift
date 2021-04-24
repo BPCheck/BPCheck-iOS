@@ -8,6 +8,8 @@
 import UIKit
 import PanModal
 import Then
+import Vision
+import RxSwift
 
 class PostViewController: UIViewController {
     
@@ -55,7 +57,11 @@ class PostViewController: UIViewController {
         $0.datePickerMode = .date
         $0.preferredDatePickerStyle = .wheels
     }
+    private let activityIndicator = UIActivityIndicatorView()
+    
     private var counter = [String]()
+    private var request = VNRecognizeTextRequest(completionHandler: nil)
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +76,7 @@ class PostViewController: UIViewController {
         view.addSubview(datePickerView)
         view.addSubview(recognizingText)
         view.addSubview(updateButton)
+        view.addSubview(activityIndicator)
         
         for i in 1...200 { counter.append(String(i)) }
         
@@ -84,9 +91,58 @@ class PostViewController: UIViewController {
         
         setupConstraint()
         
+        recognizingText.rx.tap.subscribe(onNext: { [unowned self] _ in setupGallery() }).disposed(by: disposeBag)
     }
     
-
+    private func setupGallery() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        imagePicker.sourceType = .photoLibrary
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    private func startAnimating() {
+        activityIndicator.startAnimating()
+    }
+    
+    private func stopAnimating() {
+        activityIndicator.stopAnimating()
+    }
+    
+    private func setupVisionTextRecognizeImage(image: UIImage?) {
+        var textString = ""
+        
+        request = VNRecognizeTextRequest(completionHandler: { (request, error) in
+            guard let observations = request.results as? [VNRecognizedTextObservation] else { fatalError("recieved invaild observation")}
+            
+            for observation in observations {
+                guard let topCandidate = observation.topCandidates(1).first else {
+                    print("no cadidate")
+                    continue
+                }
+                
+                textString += "\n\(topCandidate.string)"
+                DispatchQueue.main.async {
+                    self.stopAnimating()
+                    print(textString)
+                }
+            }
+        })
+        
+        let requests = [request]
+        
+        request.recognitionLanguages = ["ko_KR"]
+        request.usesLanguageCorrection = true
+        request.recognitionLevel = .accurate
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            guard let img = image?.cgImage else { fatalError("missing image to scan")}
+            let handle = VNImageRequestHandler(cgImage: img, options: [:])
+            try? handle.perform(requests)
+        }
+    }
+    
     private func setupConstraint() {
         highLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view.snp.top).offset(60)
@@ -150,30 +206,24 @@ class PostViewController: UIViewController {
             make.width.equalTo(156)
             make.height.equalTo(50)
         }
+        
+        activityIndicator.snp.makeConstraints { (make) in
+            make.width.height.equalTo(50)
+            make.top.equalTo(view.snp.top).offset(60)
+            make.centerX.equalToSuperview()
+        }
     }
     
 }
 
 extension PostViewController: PanModalPresentable {
-
-    var panScrollable: UIScrollView? {
-        return nil
-    }
+    var longFormHeight: PanModalHeight { return .contentHeight(400) }
+    var anchorModalToLongForm: Bool { return false }
+    var shouldRoundTopCorners: Bool { return true }
+    var panScrollable: UIScrollView? {  return nil }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
-    }
-    
-    var longFormHeight: PanModalHeight {
-        return .contentHeight(400)
-    }
-    
-    var anchorModalToLongForm: Bool {
-        return false
-    }
-    
-    var shouldRoundTopCorners: Bool {
-        return true
     }
 }
 
@@ -188,5 +238,14 @@ extension PostViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return counter[row]
+    }
+}
+
+extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        dismiss(animated: true, completion: nil)
+        startAnimating()
+        let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
+        setupVisionTextRecognizeImage(image: image)
     }
 }
