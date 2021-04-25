@@ -53,7 +53,7 @@ extension BPCheckAPI: TargetType {
         case .getBpAll:
             return "/bp/all"
         case .getMain:
-            return "/bp/main"
+            return "/main"
         }
     }
     

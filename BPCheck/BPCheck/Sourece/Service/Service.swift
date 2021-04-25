@@ -15,6 +15,7 @@ class Service: ServiceBasic {
 
     func signIn(_ userId: String,_ password: String) -> ReturnState {
         return provider.rx.request(.signIn(userId, password))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map(Token.self)
@@ -27,6 +28,7 @@ class Service: ServiceBasic {
     
     func signUp(_ userId: String, _ name: String, _ password: String) -> ReturnState {
         return provider.rx.request(.signUp(userId, password, name))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
@@ -35,14 +37,16 @@ class Service: ServiceBasic {
     
     func postMeasureBp(_ highBp: String, _ lowBp: String, _ pulse: String, _ date: String) -> ReturnState {
         return provider.rx.request(.postBp(highBp, lowBp, pulse, date))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
             .catchError { return .just(self.setNetworkError($0))}
     }
     
-    func deleteBp(_ ID: String) -> ReturnState {
-        return provider.rx.request(.deleteBp(ID))
+    func deleteBp(_ id: String) -> ReturnState {
+        return provider.rx.request(.deleteBp(id))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
@@ -51,30 +55,34 @@ class Service: ServiceBasic {
     
     func postRegisterHospital(_ hospitalName: String, _ hospitalNumber: String) -> ReturnState {
         return provider.rx.request(.postHospital(hospitalName, hospitalNumber))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
             .catchError { return .just(self.setNetworkError($0))}
     }
     
-    func deleteHospital(_ ID: String) -> ReturnState {
-        return provider.rx.request(.deleteHospital(ID))
+    func deleteHospital(_ id: String) -> ReturnState {
+        return provider.rx.request(.deleteHospital(id))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
             .catchError { return .just(self.setNetworkError($0))}
     }
     
-    func selectFavoritHospital(_ ID: String) -> ReturnState {
-        return provider.rx.request(.selectHospital(ID))
+    func selectFavoritHospital(_ id: String) -> ReturnState {
+        return provider.rx.request(.selectHospital(id))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
             .catchError { return .just(self.setNetworkError($0))}
     }
     
-    func deselectFavoritHospital(_ ID: String) -> ReturnState {
-        return provider.rx.request(.deselectHospital(ID))
+    func deselectFavoritHospital(_ id: String) -> ReturnState {
+        return provider.rx.request(.deselectHospital(id))
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
@@ -83,14 +91,18 @@ class Service: ServiceBasic {
         
     func getMainFeed() -> ReturnStateWithData<Main> {
         return provider.rx.request(.getMain)
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .map(Main.self)
             .map{ return ($0, .ok) }
-            .catchError { error in return .error(error) }
+            .catchError { error in
+                print(error)
+                return .error(error) }
     }
     
     func getOnlyLowBp() -> ReturnStateWithData<OnlyLowBp> {
         return provider.rx.request(.getBpLow)
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .map(OnlyLowBp.self)
             .map{ return ($0, .ok) }
@@ -99,6 +111,7 @@ class Service: ServiceBasic {
     
     func getOnlyHighBp() -> ReturnStateWithData<OnlyHighBp> {
         return provider.rx.request(.getBpHigh)
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .map(OnlyHighBp.self)
             .map{ return ($0, .ok) }
@@ -107,6 +120,7 @@ class Service: ServiceBasic {
     
     func getAllBp() -> ReturnStateWithData<AllBp> {
         return provider.rx.request(.getBpAll)
+            .retry(3)
             .filterSuccessfulStatusCodes()
             .map(AllBp.self)
             .map{ return ($0, .ok) }
