@@ -15,3 +15,14 @@ struct HospitalRegister: Codable {
 struct Hospital: Codable {
     let hospitalName: String
 }
+
+struct HospitalInfomation: Codable {
+    let hospitalName: String
+    let hospitalNumber: String
+    let isSelect: Bool
+    let id: Int
+}
+
+struct HospitalInfo: Codable {
+    let data: [HospitalInfomation]
+}
