@@ -127,6 +127,15 @@ class Service: ServiceBasic {
             .catchError { error in return .error(error) }
     }
     
+    func getHospital() -> ReturnStateWithData<HospitalInfo> {
+        return provider.rx.request(.getHospital)
+            .retry(3)
+            .filterSuccessfulStatusCodes()
+            .map (HospitalInfo.self)
+            .map { return ($0, .ok)}
+            .catchError { error in return .error(error)}
+    }
+    
     func setNetworkError(_ error: Error) -> StatusRules {
         print(error)
         print(error.localizedDescription)

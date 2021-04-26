@@ -21,6 +21,7 @@ enum BPCheckAPI {
     case getBpHigh
     case getBpAll
     case getMain
+    case getHospital
 }
 
 extension BPCheckAPI: TargetType {
@@ -54,6 +55,8 @@ extension BPCheckAPI: TargetType {
             return "/bp/all"
         case .getMain:
             return "/main"
+        case .getHospital:
+            return "/hospital"
         }
     }
     
@@ -65,7 +68,7 @@ extension BPCheckAPI: TargetType {
             return .delete
         case .selectHospital, .deselectHospital:
             return .put
-        case .getMain, .getBpAll, .getBpHigh, .getBpLow:
+        case .getMain, .getBpAll, .getBpHigh, .getBpLow, .getHospital:
             return .get
         }
     }
@@ -92,14 +95,10 @@ extension BPCheckAPI: TargetType {
     var headers: [String : String]? {
         switch self {
         default:
-            return nil
+            return ["Authorization" : "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJnYXlvMDMiLCJpYXQiOjE2MTg4ODI1NjYsImV4cCI6MTYxOTQ4NzM2Nn0.GkTF1sCBwUEhAP7m-wuDP9pkzMDJSL35PP5bv3OsB2o"]
         }
     }
 }
-
-//guard let token = UserDefaults.standard.string(forKey: "token") else { return nil }
-//print(token)
-//return ["Authorization" : "Bearer " + token]
 
 enum StatusRules: Int {
     case ok = 200

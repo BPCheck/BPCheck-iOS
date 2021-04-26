@@ -26,4 +26,5 @@ protocol ServiceBasic: ServiceType {
     func getOnlyLowBp() -> ReturnStateWithData<OnlyLowBp>
     func getOnlyHighBp() -> ReturnStateWithData<OnlyHighBp>
     func getAllBp() -> ReturnStateWithData<AllBp>
+    func getHospital() -> ReturnStateWithData<HospitalInfo>
 }
