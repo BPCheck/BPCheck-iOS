@@ -20,7 +20,7 @@ final class LowReactor: Reactor {
     }
     
     struct State {
-        var chart: OnlyLowBp?
+        var chart: [LowBp]
         var result: String?
     }
     
@@ -28,7 +28,7 @@ final class LowReactor: Reactor {
     private let service = Service()
     
     init() {
-        initialState = State(chart: nil)
+        initialState = State(chart: [])
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -50,10 +50,10 @@ final class LowReactor: Reactor {
         var newState = state
         switch mutation {
         case .setLowData(let data):
-            newState.chart = data
+            newState.chart = data.data
             newState.result = nil
         case .setError(let error):
-            newState.chart = nil
+            newState.chart = []
             newState.result = error
         }
         return newState
