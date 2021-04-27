@@ -19,7 +19,7 @@ final class HospitalReactor: Reactor {
     }
     
     struct State {
-        var hospital: HospitalInfo?
+        var hospital: [HospitalInfomation]
         var result: String?
     }
     
@@ -27,7 +27,7 @@ final class HospitalReactor: Reactor {
     private let service = Service()
     
     init() {
-        initialState = State()
+        initialState = State(hospital: [])
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -35,6 +35,7 @@ final class HospitalReactor: Reactor {
         case .load:
             return service.getHospital().asObservable()
                 .map { hospital, response in
+                    print(response)
                     switch response {
                     case .ok:
                         return .setHosiptal(hospital)
@@ -51,10 +52,10 @@ final class HospitalReactor: Reactor {
         var newState = state
         switch mutation {
         case .setHosiptal(let data):
-            newState.hospital = data
+            newState.hospital = data.data
             newState.result = nil
         case .setError(let error):
-            newState.hospital = nil
+            newState.hospital = []
             newState.result = error
         }
         return newState

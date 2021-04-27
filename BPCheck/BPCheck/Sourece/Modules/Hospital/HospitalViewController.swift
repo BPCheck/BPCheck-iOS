@@ -8,16 +8,24 @@
 import UIKit
 import SnapKit
 import Then
+import ReactorKit
+import RxCocoa
 
-class HospitalViewController: UIViewController {
+final class HospitalViewController: UIViewController {
 
     private let hospitalTableView = UITableView()
+    private let reactor = HospitalReactor()
+    private let disposeBag = DisposeBag()
+    private let loadData = PublishRelay<Void>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(hospitalTableView)
+        setupTableView()
         setupConstraint()
+        bind(reactor: reactor)
+        loadData.accept(())
     }
     
     private func setupConstraint() {
@@ -28,14 +36,29 @@ class HospitalViewController: UIViewController {
             make.bottom.equalTo(view.snp.bottom)
         }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    func bind(reactor: HospitalReactor) {
+        loadData.map {
+            HospitalReactor.Action.load
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.hospital }
+            .bind(to: hospitalTableView.rx.items(cellIdentifier: "hospitalCell", cellType: UITableViewCell.self)) { row, data, cell in
+                cell.textLabel?.text = data.hospitalName
+                cell.detailTextLabel?.text = data.hospitalNumber
+            }.disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.result }
+            .subscribe(onNext: { message in
+                print(message)
+            }).disposed(by: disposeBag)
     }
-    */
+    
+    private func setupTableView() {
+        hospitalTableView.register(UITableViewCell.self, forCellReuseIdentifier: "hospitalCell")
+    }
 
 }
