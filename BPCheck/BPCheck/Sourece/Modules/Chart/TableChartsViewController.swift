@@ -8,6 +8,8 @@
 import UIKit
 import SnapKit
 import Then
+import ReactorKit
+import RxCocoa
 
 class TableChartsViewController: UIViewController {
 
@@ -19,7 +21,7 @@ class TableChartsViewController: UIViewController {
     }
     
     private let changeView = UIButton().then {
-        $0.setTitle("차트보기", for: .normal)
+        $0.setTitle("그래프 보기", for: .normal)
         $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         $0.tintColor = .white
         $0.backgroundColor = MainColor.update
@@ -27,6 +29,10 @@ class TableChartsViewController: UIViewController {
         $0.layer.cornerRadius = 19
     }
     
+    private let disposeBag = DisposeBag()
+    private let reactor = TableChartsReactor()
+    private let loadData = PublishRelay<Void>()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,6 +41,8 @@ class TableChartsViewController: UIViewController {
         view.addSubview(changeView)
             
         setupConstraint()
+        bind(reactor: reactor)
+        loadData.accept(())
     }
     
     private func setupConstraint() {
@@ -57,6 +65,29 @@ class TableChartsViewController: UIViewController {
             make.width.equalTo(100)
             make.height.equalTo(50)
         }
+    }
+    
+    func bind(reactor: TableChartsReactor) {
+        loadData.map {
+            TableChartsReactor.Action.load
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.chart }
+            .bind(to: tableView.rx.items(cellIdentifier: "allCell", cellType: AllBpTableViewCell.self)) { row, data, cell in
+                
+            }.disposed(by: disposeBag)
+        
+        reactor.state
+            .map { $0.result }
+            .subscribe(onNext: { message in
+                print(message)
+            }).disposed(by: disposeBag)
+    }
+    
+    private func setupTableView() {
+        tableView.register(AllBpTableViewCell.self, forCellReuseIdentifier: "allCell")
     }
 
 }
