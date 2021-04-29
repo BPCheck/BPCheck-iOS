@@ -11,23 +11,29 @@ import ReactorKit
 final class HospitalReactor: Reactor {
     enum Action {
         case load
+        case didSelectHospital(IndexPath)
+        case didDeselectHospital(IndexPath)
+        case postFavoritHospital
+        case deleteFavoritHospital(IndexPath)
     }
     
     enum Mutation {
         case setHosiptal(HospitalInfo)
         case setError(String)
+        case setReload
     }
     
     struct State {
         var hospital: [HospitalInfomation]
         var result: String?
+        var reloadData: Void
     }
     
     let initialState: State
     private let service = Service()
     
     init() {
-        initialState = State(hospital: [])
+        initialState = State(hospital: [], reloadData: ())
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -45,6 +51,49 @@ final class HospitalReactor: Reactor {
                         return .setError("server error")
                     }
                 }
+        case .didSelectHospital(let indexPath):
+            return service.selectFavoritHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
+                .map { response in
+                    switch response {
+                    case .ok:
+                        return .setReload
+                    default:
+                        return .setError("server error")
+                    }
+                }
+            
+        case .didDeselectHospital(let indexPath):
+            return service.deselectFavoritHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
+                .map { response in
+                    switch response {
+                    case .ok:
+                        return .setReload
+                    default:
+                        return .setError("server error")
+                    }
+                }
+            
+        case .deleteFavoritHospital(let indexPath):
+            return service.deleteHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
+                .map { response in
+                    switch response {
+                    case .ok:
+                        return .setReload
+                    default:
+                        return .setError("server error")
+                    }
+                }
+            
+        case .postFavoritHospital:
+            return service.postRegisterHospital("", "").asObservable()
+                .map { response in
+                    switch response {
+                    case .ok:
+                        return .setReload
+                    default:
+                        return .setError("server error")
+                    }
+                }
         }
     }
     
@@ -57,6 +106,8 @@ final class HospitalReactor: Reactor {
         case .setError(let error):
             newState.hospital = []
             newState.result = error
+        case .setReload:
+            newState.reloadData = ()
         }
         return newState
     }
