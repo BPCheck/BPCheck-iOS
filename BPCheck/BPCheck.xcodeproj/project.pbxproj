@@ -3,17 +3,44 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		8782CBEC81EA99125D8615C0 /* Pods_BPCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B31BE3E5561569A3F7F2B85 /* Pods_BPCheck.framework */; };
 		EB062A9C261607E80040B4C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB062A9B261607E80040B4C0 /* AppDelegate.swift */; };
 		EB062A9E261607E80040B4C0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB062A9D261607E80040B4C0 /* SceneDelegate.swift */; };
-		EB062AA0261607E80040B4C0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB062A9F261607E80040B4C0 /* ViewController.swift */; };
+		EB062AA0261607E80040B4C0 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB062A9F261607E80040B4C0 /* SignInViewController.swift */; };
 		EB062AA3261607E80040B4C0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB062AA1261607E80040B4C0 /* Main.storyboard */; };
 		EB062AA5261607ED0040B4C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB062AA4261607ED0040B4C0 /* Assets.xcassets */; };
 		EB062AA8261607ED0040B4C0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB062AA6261607ED0040B4C0 /* LaunchScreen.storyboard */; };
+		EB8CC4E02619521E0060FA5A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8CC4DF2619521E0060FA5A /* Token.swift */; };
+		EB9227EA261853D00031F9E7 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9227E9261853D00031F9E7 /* UIViewController.swift */; };
+		EB973F202619624E005493A2 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB973F1F2619624E005493A2 /* UITextField.swift */; };
+		EBA5A27A261EA2EF00E635E6 /* LowChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA5A279261EA2EF00E635E6 /* LowChartViewController.swift */; };
+		EBB32EE0261F3D6700CE7E38 /* TableChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB32EDF261F3D6700CE7E38 /* TableChartsViewController.swift */; };
+		EBB4DB612616D9CA001872B6 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB4DB602616D9CA001872B6 /* Color.swift */; };
+		EBB4DB652616DBFD001872B6 /* SignInReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB4DB642616DBFD001872B6 /* SignInReactor.swift */; };
+		EBB4DB682616DEAC001872B6 /* BPCheckAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB4DB672616DEAC001872B6 /* BPCheckAPI.swift */; };
+		EBB4DB6B2616E8B3001872B6 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB4DB6A2616E8B3001872B6 /* Service.swift */; };
+		EBB657D12619A40E00D75E51 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB657D02619A40E00D75E51 /* SignUpViewController.swift */; };
+		EBB657D42619A79A00D75E51 /* SignUpReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB657D32619A79A00D75E51 /* SignUpReactor.swift */; };
+		EBB657D92619CE1500D75E51 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB657D82619CE1500D75E51 /* HomeViewController.swift */; };
+		EBB657DD261A8A4500D75E51 /* MainFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB657DC261A8A4500D75E51 /* MainFeedView.swift */; };
+		EBBD53C5262E5F1400E4C0A9 /* HomeReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD53C4262E5F1400E4C0A9 /* HomeReactor.swift */; };
+		EBBD53C8262E66EE00E4C0A9 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD53C7262E66EE00E4C0A9 /* Home.swift */; };
+		EBBD53CB262E69B900E4C0A9 /* Hospital.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD53CA262E69B900E4C0A9 /* Hospital.swift */; };
+		EBBD53CE262E69FB00E4C0A9 /* Bp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD53CD262E69FB00E4C0A9 /* Bp.swift */; };
+		EBBD53D1262E6B8B00E4C0A9 /* ServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD53D0262E6B8B00E4C0A9 /* ServiceType.swift */; };
+		EBBD53D4262EB39F00E4C0A9 /* LowReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBBD53D3262EB39F00E4C0A9 /* LowReactor.swift */; };
+		EBD115AC261D34DB00FA9C83 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD115AB261D34DB00FA9C83 /* PostViewController.swift */; };
+		EBD115B1261D50F900FA9C83 /* HospitalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBD115B0261D50F900FA9C83 /* HospitalViewController.swift */; };
+		EBFA8A8F263643F30042DAC3 /* HospitalReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFA8A8E263643F30042DAC3 /* HospitalReactor.swift */; };
+		EBFD819F26381BEB00B0362A /* TableChartsReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFD819E26381BEB00B0362A /* TableChartsReactor.swift */; };
+		EBFD81A226381F0B00B0362A /* AllBpTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFD81A126381F0B00B0362A /* AllBpTableViewCell.swift */; };
+		EBFD81A526381F2A00B0362A /* HighReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFD81A426381F2A00B0362A /* HighReactor.swift */; };
+		EBFD81A926381F7000B0362A /* HighChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFD81A826381F7000B0362A /* HighChartViewController.swift */; };
+		EBFD81AC263822A600B0362A /* PostReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFD81AB263822A600B0362A /* PostReactor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,11 +50,38 @@
 		EB062A98261607E80040B4C0 /* BPCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BPCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB062A9B261607E80040B4C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EB062A9D261607E80040B4C0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		EB062A9F261607E80040B4C0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		EB062A9F261607E80040B4C0 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		EB062AA2261607E80040B4C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EB062AA4261607ED0040B4C0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EB062AA7261607ED0040B4C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EB062AA9261607ED0040B4C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EB8CC4DF2619521E0060FA5A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
+		EB9227E9261853D00031F9E7 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
+		EB973F1F2619624E005493A2 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
+		EBA5A279261EA2EF00E635E6 /* LowChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowChartViewController.swift; sourceTree = "<group>"; };
+		EBB32EDF261F3D6700CE7E38 /* TableChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableChartsViewController.swift; sourceTree = "<group>"; };
+		EBB4DB602616D9CA001872B6 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		EBB4DB642616DBFD001872B6 /* SignInReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInReactor.swift; sourceTree = "<group>"; };
+		EBB4DB672616DEAC001872B6 /* BPCheckAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPCheckAPI.swift; sourceTree = "<group>"; };
+		EBB4DB6A2616E8B3001872B6 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		EBB657D02619A40E00D75E51 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		EBB657D32619A79A00D75E51 /* SignUpReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpReactor.swift; sourceTree = "<group>"; };
+		EBB657D82619CE1500D75E51 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		EBB657DC261A8A4500D75E51 /* MainFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainFeedView.swift; sourceTree = "<group>"; };
+		EBBD53C4262E5F1400E4C0A9 /* HomeReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeReactor.swift; sourceTree = "<group>"; };
+		EBBD53C7262E66EE00E4C0A9 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		EBBD53CA262E69B900E4C0A9 /* Hospital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hospital.swift; sourceTree = "<group>"; };
+		EBBD53CD262E69FB00E4C0A9 /* Bp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bp.swift; sourceTree = "<group>"; };
+		EBBD53D0262E6B8B00E4C0A9 /* ServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceType.swift; sourceTree = "<group>"; };
+		EBBD53D3262EB39F00E4C0A9 /* LowReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowReactor.swift; sourceTree = "<group>"; };
+		EBD115AB261D34DB00FA9C83 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		EBD115B0261D50F900FA9C83 /* HospitalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HospitalViewController.swift; sourceTree = "<group>"; };
+		EBFA8A8E263643F30042DAC3 /* HospitalReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HospitalReactor.swift; sourceTree = "<group>"; };
+		EBFD819E26381BEB00B0362A /* TableChartsReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableChartsReactor.swift; sourceTree = "<group>"; };
+		EBFD81A126381F0B00B0362A /* AllBpTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllBpTableViewCell.swift; sourceTree = "<group>"; };
+		EBFD81A426381F2A00B0362A /* HighReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighReactor.swift; sourceTree = "<group>"; };
+		EBFD81A826381F7000B0362A /* HighChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighChartViewController.swift; sourceTree = "<group>"; };
+		EBFD81AB263822A600B0362A /* PostReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostReactor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,7 +102,6 @@
 				517C0D250286D9AFEDD071A4 /* Pods-BPCheck.debug.xcconfig */,
 				4CA040F7B914536378CB9D38 /* Pods-BPCheck.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -81,15 +134,178 @@
 		EB062A9A261607E80040B4C0 /* BPCheck */ = {
 			isa = PBXGroup;
 			children = (
-				EB062A9B261607E80040B4C0 /* AppDelegate.swift */,
-				EB062A9D261607E80040B4C0 /* SceneDelegate.swift */,
-				EB062A9F261607E80040B4C0 /* ViewController.swift */,
-				EB062AA1261607E80040B4C0 /* Main.storyboard */,
-				EB062AA4261607ED0040B4C0 /* Assets.xcassets */,
-				EB062AA6261607ED0040B4C0 /* LaunchScreen.storyboard */,
+				EBB4DB522616BE3C001872B6 /* Supporting Files */,
+				EBB4DB512616BE38001872B6 /* Resource */,
+				EBB4DB502616BE31001872B6 /* Sourece */,
 				EB062AA9261607ED0040B4C0 /* Info.plist */,
 			);
 			path = BPCheck;
+			sourceTree = "<group>";
+		};
+		EB8CC4DE261952170060FA5A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EB8CC4DF2619521E0060FA5A /* Token.swift */,
+				EBBD53C7262E66EE00E4C0A9 /* Home.swift */,
+				EBBD53CA262E69B900E4C0A9 /* Hospital.swift */,
+				EBBD53CD262E69FB00E4C0A9 /* Bp.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EB9227E8261853C20031F9E7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				EB9227E9261853D00031F9E7 /* UIViewController.swift */,
+				EB973F1F2619624E005493A2 /* UITextField.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		EBA5A278261EA2E500E635E6 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				EBA5A279261EA2EF00E635E6 /* LowChartViewController.swift */,
+				EBB32EDF261F3D6700CE7E38 /* TableChartsViewController.swift */,
+				EBBD53D3262EB39F00E4C0A9 /* LowReactor.swift */,
+				EBFD819E26381BEB00B0362A /* TableChartsReactor.swift */,
+				EBFD81A426381F2A00B0362A /* HighReactor.swift */,
+				EBFD81A826381F7000B0362A /* HighChartViewController.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
+		EBB4DB502616BE31001872B6 /* Sourece */ = {
+			isa = PBXGroup;
+			children = (
+				EBB657DB261A8A2C00D75E51 /* Components */,
+				EB8CC4DE261952170060FA5A /* Models */,
+				EB9227E8261853C20031F9E7 /* Extensions */,
+				EBB4DB5F2616D9C3001872B6 /* Util */,
+				EBB4DB592616BE9B001872B6 /* Managers */,
+				EBB4DB582616BE8D001872B6 /* Service */,
+				EBB4DB552616BE65001872B6 /* Modules */,
+				EBB4DB542616BE5D001872B6 /* Application */,
+				EBB4DB532616BE57001872B6 /* Networking */,
+			);
+			path = Sourece;
+			sourceTree = "<group>";
+		};
+		EBB4DB512616BE38001872B6 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				EB062AA1261607E80040B4C0 /* Main.storyboard */,
+				EB062AA4261607ED0040B4C0 /* Assets.xcassets */,
+				EB062AA6261607ED0040B4C0 /* LaunchScreen.storyboard */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		EBB4DB522616BE3C001872B6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		EBB4DB532616BE57001872B6 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				EBB4DB672616DEAC001872B6 /* BPCheckAPI.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		EBB4DB542616BE5D001872B6 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				EB062A9D261607E80040B4C0 /* SceneDelegate.swift */,
+				EB062A9B261607E80040B4C0 /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		EBB4DB552616BE65001872B6 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				EBA5A278261EA2E500E635E6 /* Chart */,
+				EBD115AF261D50EF00FA9C83 /* Hospital */,
+				EBD115AA261D34CD00FA9C83 /* Post */,
+				EBB657D62619CBC400D75E51 /* Home */,
+				EBB4DB572616BE82001872B6 /* Auth */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		EBB4DB572616BE82001872B6 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				EB062A9F261607E80040B4C0 /* SignInViewController.swift */,
+				EBB4DB642616DBFD001872B6 /* SignInReactor.swift */,
+				EBB657D02619A40E00D75E51 /* SignUpViewController.swift */,
+				EBB657D32619A79A00D75E51 /* SignUpReactor.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		EBB4DB582616BE8D001872B6 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				EBB4DB6A2616E8B3001872B6 /* Service.swift */,
+				EBBD53D0262E6B8B00E4C0A9 /* ServiceType.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		EBB4DB592616BE9B001872B6 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		EBB4DB5F2616D9C3001872B6 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				EBB4DB602616D9CA001872B6 /* Color.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		EBB657D62619CBC400D75E51 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				EBB657D82619CE1500D75E51 /* HomeViewController.swift */,
+				EBBD53C4262E5F1400E4C0A9 /* HomeReactor.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		EBB657DB261A8A2C00D75E51 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				EBB657DC261A8A4500D75E51 /* MainFeedView.swift */,
+				EBFD81A126381F0B00B0362A /* AllBpTableViewCell.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		EBD115AA261D34CD00FA9C83 /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				EBD115AB261D34DB00FA9C83 /* PostViewController.swift */,
+				EBFD81AB263822A600B0362A /* PostReactor.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		EBD115AF261D50EF00FA9C83 /* Hospital */ = {
+			isa = PBXGroup;
+			children = (
+				EBD115B0261D50F900FA9C83 /* HospitalViewController.swift */,
+				EBFA8A8E263643F30042DAC3 /* HospitalReactor.swift */,
+			);
+			path = Hospital;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,8 +422,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB062AA0261607E80040B4C0 /* ViewController.swift in Sources */,
+				EBBD53D1262E6B8B00E4C0A9 /* ServiceType.swift in Sources */,
+				EBB32EE0261F3D6700CE7E38 /* TableChartsViewController.swift in Sources */,
+				EBB657D12619A40E00D75E51 /* SignUpViewController.swift in Sources */,
+				EBBD53C8262E66EE00E4C0A9 /* Home.swift in Sources */,
+				EB8CC4E02619521E0060FA5A /* Token.swift in Sources */,
+				EBBD53D4262EB39F00E4C0A9 /* LowReactor.swift in Sources */,
+				EB973F202619624E005493A2 /* UITextField.swift in Sources */,
+				EBB4DB652616DBFD001872B6 /* SignInReactor.swift in Sources */,
+				EBFD81A526381F2A00B0362A /* HighReactor.swift in Sources */,
+				EBFA8A8F263643F30042DAC3 /* HospitalReactor.swift in Sources */,
+				EBB657D42619A79A00D75E51 /* SignUpReactor.swift in Sources */,
+				EBB657DD261A8A4500D75E51 /* MainFeedView.swift in Sources */,
+				EBB4DB6B2616E8B3001872B6 /* Service.swift in Sources */,
+				EBFD81A926381F7000B0362A /* HighChartViewController.swift in Sources */,
+				EBB4DB682616DEAC001872B6 /* BPCheckAPI.swift in Sources */,
+				EBFD81A226381F0B00B0362A /* AllBpTableViewCell.swift in Sources */,
+				EBA5A27A261EA2EF00E635E6 /* LowChartViewController.swift in Sources */,
+				EBBD53CE262E69FB00E4C0A9 /* Bp.swift in Sources */,
+				EBBD53C5262E5F1400E4C0A9 /* HomeReactor.swift in Sources */,
+				EB062AA0261607E80040B4C0 /* SignInViewController.swift in Sources */,
+				EBD115AC261D34DB00FA9C83 /* PostViewController.swift in Sources */,
+				EBBD53CB262E69B900E4C0A9 /* Hospital.swift in Sources */,
+				EBD115B1261D50F900FA9C83 /* HospitalViewController.swift in Sources */,
+				EBB4DB612616D9CA001872B6 /* Color.swift in Sources */,
+				EBFD81AC263822A600B0362A /* PostReactor.swift in Sources */,
 				EB062A9C261607E80040B4C0 /* AppDelegate.swift in Sources */,
+				EB9227EA261853D00031F9E7 /* UIViewController.swift in Sources */,
+				EBB657D92619CE1500D75E51 /* HomeViewController.swift in Sources */,
+				EBFD819F26381BEB00B0362A /* TableChartsReactor.swift in Sources */,
 				EB062A9E261607E80040B4C0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
