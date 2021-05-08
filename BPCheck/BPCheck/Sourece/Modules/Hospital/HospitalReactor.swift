@@ -12,8 +12,7 @@ final class HospitalReactor: Reactor {
     enum Action {
         case load
         case didSelectHospital(IndexPath)
-        case didDeselectHospital(IndexPath)
-        case postFavoritHospital
+        case postFavoritHospital(HospitalRegister)
         case deleteFavoritHospital(IndexPath)
     }
     
@@ -26,14 +25,14 @@ final class HospitalReactor: Reactor {
     struct State {
         var hospital: [HospitalInfomation]
         var result: String?
-        var reloadData: Void
+        var reloadData: Void?
     }
     
     let initialState: State
     private let service = Service()
     
     init() {
-        initialState = State(hospital: [], reloadData: ())
+        initialState = State(hospital: [])
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -52,27 +51,28 @@ final class HospitalReactor: Reactor {
                     }
                 }
         case .didSelectHospital(let indexPath):
-            return service.selectFavoritHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
-                .map { response in
-                    switch response {
-                    case .ok:
-                        return .setReload
-                    default:
-                        return .setError("server error")
+            if !self.currentState.hospital[indexPath.row].isSelect {
+                return service.selectFavoritHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
+                    .map { response in
+                        switch response {
+                        case .ok:
+                            return .setReload
+                        default:
+                            return .setError("server error")
+                        }
                     }
-                }
-            
-        case .didDeselectHospital(let indexPath):
-            return service.deselectFavoritHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
-                .map { response in
-                    switch response {
-                    case .ok:
-                        return .setReload
-                    default:
-                        return .setError("server error")
+            }else {
+                return service.deselectFavoritHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
+                    .map { response in
+                        switch response {
+                        case .ok:
+                            return .setReload
+                        default:
+                            return .setError("server error")
+                        }
                     }
-                }
-            
+            }
+
         case .deleteFavoritHospital(let indexPath):
             return service.deleteHospital(String(self.currentState.hospital[indexPath.row].id)).asObservable()
                 .map { response in
@@ -84,8 +84,8 @@ final class HospitalReactor: Reactor {
                     }
                 }
             
-        case .postFavoritHospital:
-            return service.postRegisterHospital("", "").asObservable()
+        case .postFavoritHospital(let hospital):
+            return service.postRegisterHospital(hospital.hospitalName, hospital.hospitalNumber).asObservable()
                 .map { response in
                     switch response {
                     case .ok:
@@ -102,12 +102,11 @@ final class HospitalReactor: Reactor {
         switch mutation {
         case .setHosiptal(let data):
             newState.hospital = data.data
-            newState.result = nil
+            newState.result = "ㅇㅅㅇ"
         case .setError(let error):
-            newState.hospital = []
             newState.result = error
         case .setReload:
-            newState.reloadData = ()
+            newState.result = nil
         }
         return newState
     }
