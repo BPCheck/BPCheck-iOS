@@ -12,16 +12,19 @@ final class TableChartsReactor: Reactor {
     
     enum Action {
         case load
+        case deleteEnroll(IndexPath)
     }
     
     enum Mutation {
         case setAllData(AllBp)
         case setError(String)
+        case setReload
     }
     
     struct State {
-        var chart: [Bp]
+        var chart: [DeleteBp]
         var result: String?
+        var reloadData: Void?
     }
     
     let initialState: State
@@ -43,6 +46,16 @@ final class TableChartsReactor: Reactor {
                         return .setError("")
                     }
                 }
+        case .deleteEnroll(let indexPath):
+            return service.deleteBp(String(self.currentState.chart[indexPath.row].id)).asObservable()
+                .map { response in
+                    switch response {
+                    case .ok:
+                        return .setReload
+                    default:
+                        return .setError("server error")
+                    }
+                }
         }
     }
     
@@ -51,10 +64,11 @@ final class TableChartsReactor: Reactor {
         switch mutation {
         case .setAllData(let data):
             newState.chart = data.data
-            newState.result = nil
+            newState.result = ""
         case .setError(let error):
-            newState.chart = []
             newState.result = error
+        case .setReload:
+            newState.result = nil
         }
         return newState
     }

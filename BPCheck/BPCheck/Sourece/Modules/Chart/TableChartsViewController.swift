@@ -43,6 +43,17 @@ class TableChartsViewController: UIViewController {
         setupConstraint()
         bind(reactor: reactor)
         loadData.accept(())
+        setupTableView()
+        
+        changeView.rx.tap.subscribe(onNext: { _ in
+            self.navigationController?.popViewController(animated: true)
+        }).disposed(by: disposeBag)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        title = "모든 혈압 모음"
     }
     
     private func setupConstraint() {
@@ -52,11 +63,12 @@ class TableChartsViewController: UIViewController {
         }
         
         tableView.snp.makeConstraints { (make) in
-            make.center.equalTo(view)
+            make.centerX.equalTo(view)
             make.leading.equalTo(view)
             make.trailing.equalTo(view)
             make.width.equalTo(view.snp.width)
-            make.height.equalTo(300)
+            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.bottom.equalTo(view.snp.bottom)
         }
         
         changeView.snp.makeConstraints { (make) in
@@ -67,27 +79,36 @@ class TableChartsViewController: UIViewController {
         }
     }
     
+    
     func bind(reactor: TableChartsReactor) {
         loadData.map {
             TableChartsReactor.Action.load
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
+        tableView.rx.itemDeleted.map { index in
+            TableChartsReactor.Action.deleteEnroll(index)
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
         reactor.state
             .map { $0.chart }
             .bind(to: tableView.rx.items(cellIdentifier: "allCell", cellType: AllBpTableViewCell.self)) { row, data, cell in
-                
+                cell.configCell(data)
             }.disposed(by: disposeBag)
         
         reactor.state
             .map { $0.result }
             .subscribe(onNext: { message in
-                print(message)
+                if message == nil {
+                    self.loadData.accept(())
+                }
             }).disposed(by: disposeBag)
     }
     
     private func setupTableView() {
         tableView.register(AllBpTableViewCell.self, forCellReuseIdentifier: "allCell")
+        tableView.rowHeight = 100
     }
 
 }
