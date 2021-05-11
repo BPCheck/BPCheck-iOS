@@ -14,8 +14,16 @@ struct Bp: Codable {
     let pulse: String
 }
 
+struct DeleteBp: Codable {
+    let id: Int
+    let lowBp: String
+    let highBp: String
+    let date: String
+    let pulse: String
+}
+
 struct AllBp: Codable {
-    let data: [Bp]
+    let data: [DeleteBp]
 }
 
 struct OnlyHighBp: Codable {
