@@ -43,11 +43,15 @@ class HighChartViewController: UIViewController {
         bind(reactor: reactor)
         loadData.accept(())
         
+        changeView.rx.tap.subscribe(onNext: { _ in
+            self.pushViewController("tableChart")
+        }).disposed(by: disposeBag)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        title = "최고 혈압 모음"
         chartView.layoutSubviews()
         chartView.start()
     }
