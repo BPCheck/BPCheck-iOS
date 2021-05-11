@@ -9,7 +9,8 @@ import UIKit
 import PanModal
 import Then
 import Vision
-import RxSwift
+import ReactorKit
+import RxCocoa
 
 class PostViewController: UIViewController {
     
@@ -57,15 +58,21 @@ class PostViewController: UIViewController {
         $0.datePickerMode = .date
         $0.preferredDatePickerStyle = .wheels
     }
+    
     private let activityIndicator = UIActivityIndicatorView()
     
     private var counter = [String]()
     private var request = VNRecognizeTextRequest(completionHandler: nil)
     private let disposeBag = DisposeBag()
+    private let reactor = PostReactor()
+    private var lowBpData = BehaviorRelay<String>(value: "")
+    private var highBpData = BehaviorRelay<String>(value: "")
+    private var pulseBpData = BehaviorRelay<String>(value: "")
+    private var dateBpData = BehaviorRelay<String>(value: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.addSubview(highPickerView)
         view.addSubview(highLabel)
         view.addSubview(lowPickerView)
@@ -90,6 +97,8 @@ class PostViewController: UIViewController {
         pulsePickerView.delegate = self
         
         setupConstraint()
+        
+        bind(reactor: reactor)
         
         recognizingText.rx.tap.subscribe(onNext: { [unowned self] _ in setupGallery() }).disposed(by: disposeBag)
     }
@@ -212,6 +221,31 @@ class PostViewController: UIViewController {
             make.top.equalTo(view.snp.top).offset(60)
             make.centerX.equalToSuperview()
         }
+        
+        datePickerView.rx.value.asObservable().subscribe(onNext: { data in
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "YY/MM/dd"
+            self.dateBpData.accept(dateFormatter.string(from: data))
+        }).disposed(by: disposeBag)
+    }
+    
+    func bind(reactor: PostReactor) {
+        updateButton.rx.tap.map {[unowned self] _ in
+            PostReactor.Action.postBp(Bp(id: 0, lowBp: lowBpData.value, highBp: highBpData.value, date: dateBpData.value, pulse: pulseBpData.value))
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+
+        reactor.state.map { $0.result }
+            .subscribe(onNext: { message in
+                if !message!.isEmpty {
+                    self.showAlert(message!)
+                }
+            }).disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isDismiss }
+            .subscribe(onNext: { result in
+                if result { self.dismiss(animated: true, completion: nil) }
+            }).disposed(by: disposeBag)
     }
     
 }
@@ -237,6 +271,20 @@ extension PostViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch pickerView {
+        case lowPickerView:
+            print(counter[row])
+            lowBpData.accept(String(counter[row]))
+        case highPickerView:
+            print(counter[row])
+            highBpData.accept(String(counter[row]))
+        case pulsePickerView:
+            print(counter[row])
+            pulseBpData.accept(String(counter[row]))
+        default:
+            print("other pickerView")
+        }
+        
         return counter[row]
     }
 }
