@@ -48,7 +48,7 @@ final class SignInReactor: Reactor {
         case .pw(let pw):
             return Observable.concat([.just(Mutation.setPw(pw)), .just(Mutation.isEmpty(!self.currentState.id.isEmpty && !self.currentState.pw.isEmpty))])
         case .doneTap:
-            let request: Observable<Mutation> = service.signIn(self.currentState.id, self.currentState.pw).asObservable()
+            let request: Observable<Mutation> = service.signIn(currentState.id, currentState.pw).asObservable()
                 .map {
                     switch $0 {
                     case .ok:
