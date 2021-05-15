@@ -8,14 +8,14 @@
 import UIKit
 import SnapKit
 
-class MainFeedView: UIButton {
-    
+final class MainFeedView: UIButton {
+
     let textLabel = UILabel().then {
         $0.font = UIFont.systemFont(ofSize: 27)
     }
     
     let contentLabel = UILabel().then {
-        $0.font = UIFont.systemFont(ofSize: 50)
+        $0.font = UIFont.systemFont(ofSize: 48)
     }
     
     let iconLabel = UIImageView()
@@ -50,7 +50,7 @@ class MainFeedView: UIButton {
         
         contentLabel.snp.makeConstraints { (make) in
             make.leading.lessThanOrEqualTo(snp.leading).offset(84)
-            make.top.equalTo(textLabel.snp.bottom).offset(10)
+            make.top.equalTo(textLabel.snp.bottom).offset(16)
             make.trailing.lessThanOrEqualTo(snp.trailing).offset(-10)
             make.width.lessThanOrEqualTo(150)
         }
