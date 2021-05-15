@@ -26,7 +26,7 @@ enum BPCheckAPI {
 
 extension BPCheckAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://127.0.0.1:3000")!
+        return URL(string: "http://172.30.1.1:3000")!
     }
     
     var path: String {
@@ -95,7 +95,8 @@ extension BPCheckAPI: TargetType {
     var headers: [String : String]? {
         switch self {
         default:
-            return ["Authorization" : "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJnYXlvMDMiLCJpYXQiOjE2MTg4ODI1NjYsImV4cCI6MTYxOTQ4NzM2Nn0.GkTF1sCBwUEhAP7m-wuDP9pkzMDJSL35PP5bv3OsB2o"]
+            guard let token = TokenManager.currentToken?.accessToken else { return nil }
+            return ["Authorization" : "Bearer " + token ]
         }
     }
 }
