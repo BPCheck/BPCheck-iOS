@@ -26,6 +26,10 @@ class LowChartViewController: UIViewController {
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 19
     }
+    private let dismissButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "xmark"), for: .normal)
+        $0.tintColor = .black
+    }
     
     private let disposeBag = DisposeBag()
     private let reactor = LowReactor()
@@ -38,6 +42,7 @@ class LowChartViewController: UIViewController {
         view.addSubview(chartView)
         view.addSubview(titleLabel)
         view.addSubview(changeView)
+        view.addSubview(dismissButton)
         
         setupConstraint()
         bind(reactor: reactor)
@@ -45,6 +50,10 @@ class LowChartViewController: UIViewController {
         
         changeView.rx.tap.subscribe(onNext: { _ in
             self.pushViewController("tableChart")
+        }).disposed(by: disposeBag)
+        
+        dismissButton.rx.tap.subscribe(onNext: { _ in
+            self.navigationController?.popViewController(animated: true)
         }).disposed(by: disposeBag)
     }
     
@@ -75,6 +84,12 @@ class LowChartViewController: UIViewController {
             make.leading.equalTo(titleLabel.snp.trailing).offset(20)
             make.width.equalTo(100)
             make.height.equalTo(50)
+        }
+        
+        dismissButton.snp.makeConstraints { (make) in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
+            make.trailing.equalTo(view).offset(-30)
+            make.width.height.equalTo(30)
         }
     }
     

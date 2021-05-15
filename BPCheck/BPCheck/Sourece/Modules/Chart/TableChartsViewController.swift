@@ -19,7 +19,10 @@ class TableChartsViewController: UIViewController {
         $0.text = "최저/고"
         $0.font = UIFont.boldSystemFont(ofSize: 40)
     }
-    
+    private let dismissButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "xmark"), for: .normal)
+        $0.tintColor = .black
+    }
     private let changeView = UIButton().then {
         $0.setTitle("그래프 보기", for: .normal)
         $0.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
@@ -39,13 +42,18 @@ class TableChartsViewController: UIViewController {
         view.addSubview(tableView)
         view.addSubview(titleLabel)
         view.addSubview(changeView)
-            
+        view.addSubview(dismissButton)
+        
         setupConstraint()
         bind(reactor: reactor)
         loadData.accept(())
         setupTableView()
         
         changeView.rx.tap.subscribe(onNext: { _ in
+            self.navigationController?.popViewController(animated: true)
+        }).disposed(by: disposeBag)
+        
+        dismissButton.rx.tap.subscribe(onNext: { _ in
             self.navigationController?.popViewController(animated: true)
         }).disposed(by: disposeBag)
     }
@@ -76,6 +84,12 @@ class TableChartsViewController: UIViewController {
             make.leading.equalTo(titleLabel.snp.trailing).offset(20)
             make.width.equalTo(100)
             make.height.equalTo(50)
+        }
+        
+        dismissButton.snp.makeConstraints { (make) in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(30)
+            make.trailing.equalTo(view).offset(-30)
+            make.width.height.equalTo(30)
         }
     }
     
