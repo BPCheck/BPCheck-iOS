@@ -10,10 +10,9 @@ import Foundation
 struct TokenManager {
     enum TokenSataus {
         case access
-        case refresh
     }
     
-    static var currentToken: Tokens? {
+    static var currentToken: Token? {
         return StoregaeManager.shared.read()
     }
     
@@ -23,18 +22,6 @@ struct TokenManager {
         }else {
             return false
         }
-    }
-    
-    static func refreshTokenisUseful() -> Bool {
-        if (currentToken?.refreshToken) != nil {
-            return true
-        }else {
-            return false
-        }
-    }
-    
-    static func removeToken() {
-        StoregaeManager.shared.delete()
     }
     
 }

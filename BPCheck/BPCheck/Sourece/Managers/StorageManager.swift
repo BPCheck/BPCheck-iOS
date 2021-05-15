@@ -12,16 +12,16 @@ class StoregaeManager {
     
     static let shared = StoregaeManager()
     
-    private let account = "ShareUp"
+    private let account = "BPCheck"
     private let service = Bundle.main.bundleIdentifier
     
     let keyChainQuery: NSDictionary = [
         kSecClass : kSecClassGenericPassword,
         kSecAttrService : Bundle.main.bundleIdentifier ?? "default",
-        kSecAttrAccount : "ShareUp"
+        kSecAttrAccount : "BPCheck"
     ]
     
-    func create(_ user: Tokens) -> Bool {
+    func create(_ user: Token) -> Bool {
         guard let data = try? JSONEncoder().encode(user) else { return false }
         
         let keyChainQuery: NSDictionary = [
@@ -36,7 +36,7 @@ class StoregaeManager {
         return SecItemAdd(keyChainQuery, nil) == errSecSuccess
     }
     
-    func read() -> Tokens? {
+    func read() -> Token? {
         let keyChainQuery: NSDictionary = [
             kSecClass : kSecClassGenericPassword,
             kSecAttrService : service!,
@@ -50,7 +50,7 @@ class StoregaeManager {
         
         if status == errSecSuccess {
             let retrievedData = dataTypeRef as! Data
-            let value = try? JSONDecoder().decode(Tokens.self, from: retrievedData)
+            let value = try? JSONDecoder().decode(Token.self, from: retrievedData)
             return value
         }else {
             return nil
