@@ -18,6 +18,10 @@ class SignInViewController: UIViewController {
         $0.image = UIImage(named: "logoIcon")
     }
     
+    private let logoLabel = UILabel().then {
+        $0.text = "혈압의 모든 것, BPCheck"
+    }
+    
     private let idTextField = UITextField().then {
         $0.defaultRoundTextField()
         $0.placeholder = "아이디"
@@ -39,6 +43,7 @@ class SignInViewController: UIViewController {
     
     private let signUpBtn = UIButton().then {
         $0.setTitle("계정이 없으신가요?", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14)
         $0.setTitleColor(.gray, for: .normal)
     }
     
@@ -53,14 +58,15 @@ class SignInViewController: UIViewController {
         view.addSubview(pwTextField)
         view.addSubview(signInBtn)
         view.addSubview(signUpBtn)
+        view.addSubview(logoLabel)
         
         setupConstraint()
         bind(reactor: reactor)
         
         signUpBtn.rx.tap.subscribe(onNext: {[unowned self] _ in
-            pushViewController("signup")
+            let vc = storyboard?.instantiateViewController(identifier: "signup") as! SignUpViewController
+            present(vc, animated: true, completion: nil)
         }).disposed(by: disposeBag)
-        navigationController?.navigationBar.topItem?.title = "로그인"
     }
     
     func bind(reactor: SignInReactor) {
@@ -91,8 +97,7 @@ class SignInViewController: UIViewController {
         reactor.state
             .map { $0.complete }
             .subscribe(onNext: {[unowned self]  success in
-                print(success)
-                if success { showAlert("Main") }
+                if success { pushViewController("main") }
             }).disposed(by: disposeBag)
 
         reactor.state
@@ -130,9 +135,14 @@ class SignInViewController: UIViewController {
         }
         
         signUpBtn.snp.makeConstraints { (make) in
-            make.top.equalTo(pwTextField.snp.bottom).offset(20)
+            make.top.equalTo(pwTextField.snp.bottom).offset(0)
             make.trailing.equalTo(pwTextField.snp.trailing)
             make.height.equalTo(50)
+        }
+        
+        logoLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(logoView.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
         }
     }
 
