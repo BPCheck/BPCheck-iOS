@@ -17,6 +17,11 @@ class SignUpViewController: UIViewController {
         $0.image = UIImage(named: "logoIcon")
     }
     
+    private let logoLabel = UILabel().then {
+        $0.font = .boldSystemFont(ofSize: 20)
+        $0.text = "회원가입"
+    }
+    
     private let idTextField = UITextField().then {
         $0.defaultRoundTextField()
         $0.placeholder = "아이디"
@@ -25,6 +30,7 @@ class SignUpViewController: UIViewController {
     private let pwTextField = UITextField().then {
         $0.defaultRoundTextField()
         $0.placeholder = "비밀번호"
+        $0.isSecureTextEntry = true
     }
     
     private let nameTextField = UITextField().then {
@@ -51,6 +57,7 @@ class SignUpViewController: UIViewController {
         view.addSubview(pwTextField)
         view.addSubview(nameTextField)
         view.addSubview(signUpBtn)
+        view.addSubview(logoLabel)
         
         setupConstraint()
         self.title = "회원가입"
@@ -134,6 +141,11 @@ class SignUpViewController: UIViewController {
             make.trailing.equalTo(nameTextField.snp.trailing)
             make.centerX.equalTo(view)
             make.height.equalTo(50)
+        }
+        
+        logoLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(40)
+            make.centerX.equalToSuperview()
         }
     }
 }
