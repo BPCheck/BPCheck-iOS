@@ -85,7 +85,7 @@ class PostViewController: UIViewController {
         view.addSubview(updateButton)
         view.addSubview(activityIndicator)
         
-        for i in 1...200 { counter.append(String(i)) }
+        for i in 40...200 { counter.append(String(i)) }
         
         highPickerView.dataSource = self
         highPickerView.delegate = self
@@ -101,6 +101,12 @@ class PostViewController: UIViewController {
         bind(reactor: reactor)
         
         recognizingText.rx.tap.subscribe(onNext: { [unowned self] _ in setupGallery() }).disposed(by: disposeBag)
+        
+        datePickerView.rx.value.asObservable().subscribe(onNext: { data in
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "YY/MM/dd"
+            self.dateBpData.accept(dateFormatter.string(from: data))
+        }).disposed(by: disposeBag)
     }
     
     private func setupGallery() {
@@ -120,33 +126,32 @@ class PostViewController: UIViewController {
     }
     
     private func setupVisionTextRecognizeImage(image: UIImage?) {
-        var textString = ""
+        var textString = [String]()
         
         request = VNRecognizeTextRequest(completionHandler: { (request, error) in
             guard let observations = request.results as? [VNRecognizedTextObservation] else { fatalError("recieved invaild observation")}
             
             for observation in observations {
-                guard let topCandidate = observation.topCandidates(1).first else {
-                    print("no cadidate")
-                    continue
-                }
-                
-                textString += "\n\(topCandidate.string)"
+                guard let topCandidate = observation.topCandidates(1).first else { continue }
+                textString.append(topCandidate.string)
                 DispatchQueue.main.async {
                     self.stopAnimating()
-                    print(textString)
+                    
+                    self.highPickerView.selectRow(Int(textString[1])! - 40, inComponent: 0, animated: true)
+                    self.lowPickerView.selectRow(Int(textString[2])! - 40, inComponent: 0, animated: true)
+                    self.pulsePickerView.selectRow(Int(textString[3])! - 40, inComponent: 0, animated: true)
                 }
             }
         })
         
         let requests = [request]
         
-        request.recognitionLanguages = ["ko_KR"]
+        request.recognitionLanguages = ["en_EG"]
         request.usesLanguageCorrection = true
         request.recognitionLevel = .accurate
         
         DispatchQueue.global(qos: .userInitiated).async {
-            guard let img = image?.cgImage else { fatalError("missing image to scan")}
+            guard let img = image?.cgImage else { fatalError("missing image to scan") }
             let handle = VNImageRequestHandler(cgImage: img, options: [:])
             try? handle.perform(requests)
         }
@@ -221,24 +226,18 @@ class PostViewController: UIViewController {
             make.top.equalTo(view.snp.top).offset(60)
             make.centerX.equalToSuperview()
         }
-        
-        datePickerView.rx.value.asObservable().subscribe(onNext: { data in
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "YY/MM/dd"
-            self.dateBpData.accept(dateFormatter.string(from: data))
-        }).disposed(by: disposeBag)
     }
     
     func bind(reactor: PostReactor) {
         updateButton.rx.tap.map {[unowned self] _ in
-            PostReactor.Action.postBp(Bp(id: 0, lowBp: lowBpData.value, highBp: highBpData.value, date: dateBpData.value, pulse: pulseBpData.value))
+            PostReactor.Action.postBp(Bp(lowBp: lowBpData.value, highBp: highBpData.value, date: dateBpData.value, pulse: pulseBpData.value))
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
 
         reactor.state.map { $0.result }
             .subscribe(onNext: { message in
-                if !message!.isEmpty {
-                    self.showAlert(message!)
+                if let text = message {
+                    self.showAlert(text)
                 }
             }).disposed(by: disposeBag)
         
@@ -247,7 +246,6 @@ class PostViewController: UIViewController {
                 if result { self.dismiss(animated: true, completion: nil) }
             }).disposed(by: disposeBag)
     }
-    
 }
 
 extension PostViewController: PanModalPresentable {
@@ -273,13 +271,10 @@ extension PostViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         switch pickerView {
         case lowPickerView:
-            print(counter[row])
             lowBpData.accept(String(counter[row]))
         case highPickerView:
-            print(counter[row])
             highBpData.accept(String(counter[row]))
         case pulsePickerView:
-            print(counter[row])
             pulseBpData.accept(String(counter[row]))
         default:
             print("other pickerView")
@@ -291,9 +286,9 @@ extension PostViewController: UIPickerViewDataSource, UIPickerViewDelegate {
 
 extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        dismiss(animated: true, completion: nil)
         startAnimating()
         let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         setupVisionTextRecognizeImage(image: image)
+        dismiss(animated: true, completion: nil)
     }
 }
