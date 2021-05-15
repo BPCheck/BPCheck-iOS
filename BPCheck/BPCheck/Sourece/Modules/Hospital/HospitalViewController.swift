@@ -30,6 +30,7 @@ final class HospitalViewController: UIViewController {
         setupConstraint()
         bind(reactor: reactor)
         loadData.accept(())
+        hospitalTableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,6 +88,8 @@ final class HospitalViewController: UIViewController {
             .subscribe(onNext: { message in
                 if message == nil {
                     self.loadData.accept(())
+                }else{
+                    self.showAlert(message!)
                 }
             }).disposed(by: disposeBag)
     }

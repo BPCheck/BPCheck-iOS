@@ -91,7 +91,7 @@ final class HospitalReactor: Reactor {
                     case .ok:
                         return .setReload
                     default:
-                        return .setError("server error")
+                        return .setError("이미 등록된 병원입니다.")
                     }
                 }
         }
@@ -102,7 +102,7 @@ final class HospitalReactor: Reactor {
         switch mutation {
         case .setHosiptal(let data):
             newState.hospital = data.data
-            newState.result = "ㅇㅅㅇ"
+            newState.result = "text"
         case .setError(let error):
             newState.result = error
         case .setReload:
