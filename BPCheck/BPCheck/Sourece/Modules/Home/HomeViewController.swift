@@ -13,7 +13,7 @@ import RxSwift
 import RxCocoa
 import ReactorKit
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
 
     private let backImageView = UIImageView().then {
         $0.image = UIImage(named: "background")
@@ -39,7 +39,7 @@ class HomeViewController: UIViewController {
         $0.textLabel.text = "날짜"
         $0.contentLabel.adjustsFontSizeToFitWidth = true
         $0.contentLabel.numberOfLines = 1
-        $0.contentLabel.minimumScaleFactor = 0.5
+        $0.contentLabel.font = .systemFont(ofSize: 36)
     }
     
     private let updateButton = UIButton().then {
@@ -77,10 +77,17 @@ class HomeViewController: UIViewController {
         view.addSubview(hospitalView)
         view.addSubview(updateButton)
         view.addSubview(feedLabel)
-        
+                
         setupConstraint()
         managerTrait()
         bind(reactor: reactor)
+        loadData.accept(())
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = true
         loadData.accept(())
     }
     
@@ -121,6 +128,10 @@ class HomeViewController: UIViewController {
         bpHighView.rx.tap.subscribe(onNext: {[unowned self] _ in
             pushViewController("high")
         }).disposed(by: disposeBag)
+        
+        hospitalView.rx.tap.subscribe(onNext: {[unowned self] _ in
+            pushViewController("hospital")
+        }).disposed(by: disposeBag)
     }
     
     private func setupConstraint() {
@@ -143,11 +154,19 @@ class HomeViewController: UIViewController {
             make.top.equalTo(view).offset(view.frame.height / 4)
         }
         
+        dateView.contentLabel.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+        }
+        
         pulseView.snp.makeConstraints { (make) in
             make.trailing.equalTo(view.snp.trailing).offset(-17)
             make.height.equalTo(138)
             make.width.equalTo(184)
             make.top.equalTo(view).offset(view.frame.height / 4)
+        }
+        
+        pulseView.contentLabel.snp.makeConstraints { (make) in
+            make.trailing.equalTo(pulseView.snp.trailing).offset(-30)
         }
         
         bpLowView.snp.makeConstraints { (make) in
@@ -171,6 +190,10 @@ class HomeViewController: UIViewController {
             make.top.equalTo(bpHighView.snp.bottom).offset(50)
         }
         
+        hospitalView.contentLabel.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+        }
+        
         updateButton.snp.makeConstraints { (make) in
             make.trailing.equalTo(view.snp.trailing).offset(-17)
             make.height.equalTo(138)
@@ -178,16 +201,4 @@ class HomeViewController: UIViewController {
             make.top.equalTo(bpLowView.snp.bottom).offset(50)
         }
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
