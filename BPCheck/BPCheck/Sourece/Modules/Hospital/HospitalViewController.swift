@@ -79,6 +79,7 @@ final class HospitalViewController: UIViewController {
                 cell.textLabel?.text = data.hospitalName
                 cell.detailTextLabel?.text = data.hospitalNumber
                 cell.accessoryType = data.isSelect ? .checkmark : .none
+                cell.backgroundColor = data.isSelect ? MainColor.update : .clear
                 
                 return cell
             }.disposed(by: disposeBag)
@@ -88,7 +89,7 @@ final class HospitalViewController: UIViewController {
             .subscribe(onNext: { message in
                 if message == nil {
                     self.loadData.accept(())
-                }else{
+                }else if message != "text"{
                     self.showAlert(message!)
                 }
             }).disposed(by: disposeBag)
