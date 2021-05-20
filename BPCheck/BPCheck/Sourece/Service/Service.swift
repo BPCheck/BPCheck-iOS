@@ -20,9 +20,8 @@ class Service: ServiceBasic {
             .asObservable()
             .map(Token.self)
             .map { token -> (StatusRules) in
-                UserDefaults.standard.set(token.accessToken, forKey: "token")
-                UserDefaults.standard.synchronize()
-                return .ok
+                if StoregaeManager.shared.create(token) { return (.ok) }
+                return (.fail)
             }.catchError { return .just(self.setNetworkError($0)) }
     }
     
