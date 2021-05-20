@@ -107,12 +107,6 @@ final class HomeViewController: UIViewController {
                 hospitalView.contentLabel.text = data.main.hospitals[0].hospitalName
                 dateView.contentLabel.text = data.main.bps[0].date
             }.disposed(by: disposeBag)
-        
-        reactor.state
-            .map { $0.result }
-            .subscribe(onNext: { message in
-                print(message)
-            }).disposed(by: disposeBag)
     }
     
     private func managerTrait() {
@@ -129,9 +123,6 @@ final class HomeViewController: UIViewController {
             pushViewController("high")
         }).disposed(by: disposeBag)
         
-        hospitalView.rx.tap.subscribe(onNext: {[unowned self] _ in
-            pushViewController("hospital")
-        }).disposed(by: disposeBag)
     }
     
     private func setupConstraint() {
