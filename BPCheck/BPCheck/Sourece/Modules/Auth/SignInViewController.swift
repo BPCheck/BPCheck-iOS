@@ -12,7 +12,7 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-class SignInViewController: UIViewController {
+final class SignInViewController: UIViewController {
     
     private let logoView = UIImageView().then {
         $0.image = UIImage(named: "logoIcon")
@@ -70,7 +70,6 @@ class SignInViewController: UIViewController {
     }
     
     func bind(reactor: SignInReactor) {
-        //action
         idTextField.rx.text.orEmpty.map{
             SignInReactor.Action.id($0)
         }.bind(to: reactor.action)
@@ -86,10 +85,9 @@ class SignInViewController: UIViewController {
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
-        //state
         reactor.state
             .map { $0.result }
-            .filter { $0 != nil}
+            .filter { $0 != nil }
             .subscribe(onNext: {[unowned self] error in
                 showAlert(error!)
             }).disposed(by: disposeBag)

@@ -65,15 +65,14 @@ final class SignInReactor: Reactor {
     
     func reduce(state: State, mutation: Mutation) -> State {
         var newState = state
+        newState.complete = false
+        newState.result = nil
         switch mutation {
         case .setID(let id):
             newState.id = id
-            newState.result = nil
         case .setPw(let pw):
             newState.pw = pw
-            newState.result = nil
         case .setLogin:
-            newState.result = nil
             newState.complete = true
         case .notAuth:
             newState.result = "아이디 또는 비밀번호가 잘못되었습니다"
@@ -81,7 +80,6 @@ final class SignInReactor: Reactor {
             newState.isEnable = isEmpty
         default:
             newState.result = "오류로 로그인이 작동하지 않습니다"
-            newState.complete = false
         }
         return newState
     }
