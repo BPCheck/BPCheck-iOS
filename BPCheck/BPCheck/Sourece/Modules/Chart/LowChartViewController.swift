@@ -76,7 +76,7 @@ class LowChartViewController: UIViewController {
             make.leading.equalTo(view)
             make.trailing.equalTo(view)
             make.width.equalTo(view.snp.width)
-            make.height.equalTo(300)
+            make.height.equalTo(500)
         }
         
         changeView.snp.makeConstraints { (make) in
@@ -119,7 +119,6 @@ class LowChartViewController: UIViewController {
         for i in data {
             allLow.append(Int(i.lowBp)!)
         }
-        print(allLow)
         chartView.setDataEntries(values: allLow)
     }
 
