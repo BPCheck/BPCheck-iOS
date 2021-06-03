@@ -46,13 +46,13 @@ final class SignUpReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .id(let id):
-            return Observable.concat([.just(Mutation.setID(id)), .just(Mutation.isEmpty(!self.currentState.name.isEmpty && !self.currentState.id.isEmpty && !self.currentState.pw.isEmpty))])
+            return Observable.concat([.just(Mutation.setID(id)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))])
         case .pw(let pw):
-            return Observable.concat([.just(Mutation.setPw(pw)), .just(Mutation.isEmpty(!self.currentState.name.isEmpty && !self.currentState.id.isEmpty && !self.currentState.pw.isEmpty))])
+            return Observable.concat([.just(Mutation.setPw(pw)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))])
         case .name(let name):
-            return Observable.concat([.just(Mutation.setName(name)), .just(Mutation.isEmpty(!self.currentState.name.isEmpty && !self.currentState.id.isEmpty && !self.currentState.pw.isEmpty))])
+            return Observable.concat([.just(Mutation.setName(name)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))])
         case .doneTap:
-            let request: Observable<Mutation> = service.signUp(self.currentState.id, name: self.currentState.name, password: self.currentState.pw).asObservable()
+            let request: Observable<Mutation> = service.signUp(currentState.id, currentState.name, currentState.pw).asObservable()
                 .map {
                     switch $0 {
                     case .ok:
