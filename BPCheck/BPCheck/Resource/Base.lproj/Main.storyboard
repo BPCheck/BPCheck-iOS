@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UHC-cX-7Vd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KwI-Wx-aex">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -24,7 +24,7 @@
             </objects>
             <point key="canvasLocation" x="1679.7101449275362" y="-613.39285714285711"/>
         </scene>
-        <!--Home View Controller-->
+        <!--Home-->
         <scene sceneID="8ZD-HQ-NCS">
             <objects>
                 <viewController id="ani-b3-yFz" customClass="HomeViewController" customModule="BPCheck" customModuleProvider="target" sceneMemberID="viewController">
@@ -34,16 +34,17 @@
                         <viewLayoutGuide key="safeArea" id="YqY-lT-Mbn"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" selectedImage="house.fill" id="3G3-fd-Ees"/>
                     <navigationItem key="navigationItem" id="FwK-Ts-oGB"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JJh-oG-09i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2589.8550724637685" y="127.90178571428571"/>
+            <point key="canvasLocation" x="1680" y="128"/>
         </scene>
         <!--자주 가는 병원-->
         <scene sceneID="WlZ-gp-CZ0">
             <objects>
-                <viewController id="I7v-nf-qzI" customClass="HospitalViewController" customModule="BPCheck" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="hospital" id="I7v-nf-qzI" customClass="HospitalViewController" customModule="BPCheck" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="i9S-aV-f3g">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -69,7 +70,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EWD-pF-1mK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3376.811594202899" y="127.90178571428571"/>
+            <point key="canvasLocation" x="2467" y="128"/>
         </scene>
         <!--Low Chart View Controller-->
         <scene sceneID="HfZ-cH-b4E">
@@ -144,8 +145,8 @@
                         <color key="selectedImageTintColor" red="0.92156862750000001" green="0.3411764706" blue="0.3411764706" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="nl3-Ld-PGE" kind="relationship" relationship="viewControllers" id="pEV-gJ-8aB"/>
-                        <segue destination="FN8-xI-gf3" kind="relationship" relationship="viewControllers" id="Unv-jc-QHS"/>
+                        <segue destination="ani-b3-yFz" kind="relationship" relationship="viewControllers" id="9Be-Mv-moe"/>
+                        <segue destination="FN8-xI-gf3" kind="relationship" relationship="viewControllers" id="F9T-OG-LrB"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rm1-sJ-7we" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -187,25 +188,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KJW-mH-ojs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="769.56521739130437" y="-613.39285714285711"/>
-        </scene>
-        <!--Home-->
-        <scene sceneID="k0Q-oq-6uF">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="nl3-Ld-PGE" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" selectedImage="house.fill" id="UJv-n3-otg"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="j76-FY-jg5">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ani-b3-yFz" kind="relationship" relationship="rootViewController" id="gcX-hn-Eki"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="CQN-if-0u6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1679.7101449275362" y="127.90178571428571"/>
         </scene>
     </scenes>
     <resources>
