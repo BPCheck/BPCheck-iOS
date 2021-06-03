@@ -39,8 +39,8 @@ class AllBpTableViewCell: UITableViewCell {
 
     }
 
-    func configCell(_ data: Bp) {
-        highLabel.text = data.highBp
+    func configCell(_ data: DeleteBp) {
+        highLabel.text = data.highBp + "/"
         lowLabel.text = data.lowBp
         currentDateLabel.text = data.date
     }
