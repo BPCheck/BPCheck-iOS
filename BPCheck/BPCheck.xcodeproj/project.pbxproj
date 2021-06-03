@@ -18,6 +18,8 @@
 		EB9227EA261853D00031F9E7 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9227E9261853D00031F9E7 /* UIViewController.swift */; };
 		EB973F202619624E005493A2 /* UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB973F1F2619624E005493A2 /* UITextField.swift */; };
 		EBA5A27A261EA2EF00E635E6 /* LowChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBA5A279261EA2EF00E635E6 /* LowChartViewController.swift */; };
+		EBAB8EA326500E4700122A85 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAB8EA226500DEF00122A85 /* TokenManager.swift */; };
+		EBAB8EA426500E4A00122A85 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBAB8EA126500DEC00122A85 /* StorageManager.swift */; };
 		EBB32EE0261F3D6700CE7E38 /* TableChartsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB32EDF261F3D6700CE7E38 /* TableChartsViewController.swift */; };
 		EBB4DB612616D9CA001872B6 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB4DB602616D9CA001872B6 /* Color.swift */; };
 		EBB4DB652616DBFD001872B6 /* SignInReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB4DB642616DBFD001872B6 /* SignInReactor.swift */; };
@@ -59,6 +61,8 @@
 		EB9227E9261853D00031F9E7 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		EB973F1F2619624E005493A2 /* UITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextField.swift; sourceTree = "<group>"; };
 		EBA5A279261EA2EF00E635E6 /* LowChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LowChartViewController.swift; sourceTree = "<group>"; };
+		EBAB8EA126500DEC00122A85 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		EBAB8EA226500DEF00122A85 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		EBB32EDF261F3D6700CE7E38 /* TableChartsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableChartsViewController.swift; sourceTree = "<group>"; };
 		EBB4DB602616D9CA001872B6 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		EBB4DB642616DBFD001872B6 /* SignInReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInReactor.swift; sourceTree = "<group>"; };
@@ -260,6 +264,8 @@
 		EBB4DB592616BE9B001872B6 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				EBAB8EA226500DEF00122A85 /* TokenManager.swift */,
+				EBAB8EA126500DEC00122A85 /* StorageManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -434,6 +440,7 @@
 				EBFA8A8F263643F30042DAC3 /* HospitalReactor.swift in Sources */,
 				EBB657D42619A79A00D75E51 /* SignUpReactor.swift in Sources */,
 				EBB657DD261A8A4500D75E51 /* MainFeedView.swift in Sources */,
+				EBAB8EA326500E4700122A85 /* TokenManager.swift in Sources */,
 				EBB4DB6B2616E8B3001872B6 /* Service.swift in Sources */,
 				EBFD81A926381F7000B0362A /* HighChartViewController.swift in Sources */,
 				EBB4DB682616DEAC001872B6 /* BPCheckAPI.swift in Sources */,
@@ -452,6 +459,7 @@
 				EBB657D92619CE1500D75E51 /* HomeViewController.swift in Sources */,
 				EBFD819F26381BEB00B0362A /* TableChartsReactor.swift in Sources */,
 				EB062A9E261607E80040B4C0 /* SceneDelegate.swift in Sources */,
+				EBAB8EA426500E4A00122A85 /* StorageManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -600,6 +608,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 43892VQKJ3;
 				INFOPLIST_FILE = BPCheck/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -619,6 +628,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 43892VQKJ3;
 				INFOPLIST_FILE = BPCheck/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
