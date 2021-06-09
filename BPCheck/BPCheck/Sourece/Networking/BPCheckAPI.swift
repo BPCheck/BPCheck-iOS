@@ -26,7 +26,7 @@ enum BPCheckAPI {
 
 extension BPCheckAPI: TargetType {
     var baseURL: URL {
-        return URL(string: "http://172.30.1.1:3000")!
+        return URL(string: "http://172.20.10.6:3000")!
     }
     
     var path: String {

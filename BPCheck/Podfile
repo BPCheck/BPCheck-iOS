@@ -7,13 +7,16 @@ target 'BPCheck' do
 
 pod ‘RxSwift’, ‘~> 5’
 pod ‘RxCocoa’, ‘~> 5’
+pod 'RxFlow'
+pod 'ReactorKit'
+
 pod ‘Alamofire’, ‘~> 5.2’
 pod 'Moya', '~> 14.0'
 pod 'Moya/RxSwift', '~> 14.0'
+
 pod 'SnapKit', '~> 5.0.0'
 pod 'Then'
 pod 'SwiftDate'
-pod 'ReactorKit'
 pod 'PanModal'
 pod 'MSBBarChart'
 
