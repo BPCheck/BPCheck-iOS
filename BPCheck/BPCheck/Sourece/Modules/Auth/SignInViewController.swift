@@ -12,8 +12,8 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class SignInViewController: UIViewController {
-    
+final class SignInViewController: BaseViewController, View {
+    typealias Reactor = SignInReactor
     private let logoView = UIImageView().then {
         $0.image = UIImage(named: "logoIcon")
     }
@@ -46,9 +46,16 @@ final class SignInViewController: UIViewController {
         $0.titleLabel?.font = .systemFont(ofSize: 14)
         $0.setTitleColor(.gray, for: .normal)
     }
+        
+    init(_ reactor: Reactor) {
+        super.init()
+        
+        self.reactor = reactor
+    }
     
-    private let disposeBag = DisposeBag()
-    private let reactor = SignInReactor()
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,12 +68,6 @@ final class SignInViewController: UIViewController {
         view.addSubview(logoLabel)
         
         setupConstraint()
-        bind(reactor: reactor)
-        
-        signUpBtn.rx.tap.subscribe(onNext: {[unowned self] _ in
-            let vc = storyboard?.instantiateViewController(identifier: "signup") as! SignUpViewController
-            present(vc, animated: true, completion: nil)
-        }).disposed(by: disposeBag)
     }
     
     func bind(reactor: SignInReactor) {
@@ -82,6 +83,11 @@ final class SignInViewController: UIViewController {
         
         signInBtn.rx.tap
             .map{ SignInReactor.Action.doneTap }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        signUpBtn.rx.tap
+            .map { SignInReactor.Action.signUp }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -104,7 +110,7 @@ final class SignInViewController: UIViewController {
             .disposed(by: disposeBag)
     }
 
-    private func setupConstraint() {
+    override func setupConstraint() {
         logoView.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.top.equalTo(view.frame.height / 8)

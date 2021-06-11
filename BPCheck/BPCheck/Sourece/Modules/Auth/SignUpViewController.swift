@@ -11,8 +11,8 @@ import RxCocoa
 import ReactorKit
 import SnapKit
 
-class SignUpViewController: UIViewController {
-    
+class SignUpViewController: BaseViewController, View {
+    typealias Reactor = SignUpReactor
     private let logoView = UIImageView().then {
         $0.image = UIImage(named: "logoIcon")
     }
@@ -45,9 +45,16 @@ class SignUpViewController: UIViewController {
         $0.backgroundColor = MainColor.auth
         $0.tintColor = .white
     }
+        
+    init(_ reactor: Reactor) {
+        super.init()
+        
+        self.reactor = reactor
+    }
     
-    private let disposeBag = DisposeBag()
-    private let reactor = SignUpReactor()
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +68,6 @@ class SignUpViewController: UIViewController {
         
         setupConstraint()
         self.title = "회원가입"
-        bind(reactor: reactor)
     }
     
     func bind(reactor: SignUpReactor) {
@@ -95,18 +101,12 @@ class SignUpViewController: UIViewController {
             }).disposed(by: disposeBag)
 
         reactor.state
-            .map { $0.complete }
-            .subscribe(onNext: {[unowned self]  success in
-                if success { navigationController?.popViewController(animated: true) }
-            }).disposed(by: disposeBag)
-
-        reactor.state
             .map { $0.isEnable }
             .bind(to: signUpBtn.rx.isEnabled )
             .disposed(by: disposeBag)
     }
     
-    private func setupConstraint() {
+    override func setupConstraint() {
         
         logoView.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
