@@ -7,8 +7,10 @@
 
 import UIKit
 import ReactorKit
+import RxCocoa
+import RxFlow
 
-final class SignUpReactor: Reactor {
+final class SignUpReactor: Reactor, Stepper {
     
     enum Action {
         case doneTap
@@ -38,7 +40,8 @@ final class SignUpReactor: Reactor {
     
     let initialState: State
     private let service = Service()
-    
+    var steps: PublishRelay<Step> = .init()
+
     init() {
         initialState = State(id: "", pw: "", name: "", result: nil, isEnable: false, complete: false)
     }
@@ -80,6 +83,7 @@ final class SignUpReactor: Reactor {
             newState.name = name
             newState.result = nil
         case .setSignUp:
+            steps.accept(BPCheckStep.dismiss)
             newState.result = nil
             newState.complete = true
         case .notAuth:

@@ -8,13 +8,16 @@
 import Foundation
 import ReactorKit
 import RxSwift
+import RxFlow
+import RxCocoa
 
-final class SignInReactor: Reactor {
+final class SignInReactor: Reactor, Stepper {
     
     enum Action {
         case doneTap
         case id(String)
         case pw(String)
+        case signUp
     }
     
     enum Mutation {
@@ -35,14 +38,19 @@ final class SignInReactor: Reactor {
     }
     
     let initialState: State
-    private let service = Service()
-    
-    init() {
+    private let service: Service
+    var steps: PublishRelay<Step> = .init()
+
+    init(_ service: Service) {
+        self.service = service
         initialState = State(id: "", pw: "", result: nil, isEnable: false, complete: false)
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
+        case .signUp:
+            steps.accept(BPCheckStep.allChartIsRequired)
+            return .empty()
         case .id(let id):
             return Observable.concat([.just(Mutation.setID(id)), .just(Mutation.isEmpty(!self.currentState.id.isEmpty && !self.currentState.pw.isEmpty))])
         case .pw(let pw):
@@ -73,6 +81,7 @@ final class SignInReactor: Reactor {
         case .setPw(let pw):
             newState.pw = pw
         case .setLogin:
+            steps.accept(BPCheckStep.signInIsRequired)
             newState.complete = true
         case .notAuth:
             newState.result = "아이디 또는 비밀번호가 잘못되었습니다"
