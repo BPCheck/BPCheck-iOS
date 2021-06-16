@@ -49,7 +49,7 @@ final class SignInReactor: Reactor, Stepper {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .signUp:
-            steps.accept(BPCheckStep.allChartIsRequired)
+            steps.accept(BPCheckStep.userIsSignIn)
             return .empty()
         case .id(let id):
             return Observable.concat([.just(Mutation.setID(id)), .just(Mutation.isEmpty(!self.currentState.id.isEmpty && !self.currentState.pw.isEmpty))])
@@ -58,8 +58,10 @@ final class SignInReactor: Reactor, Stepper {
         case .doneTap:
             let request: Observable<Mutation> = service.signIn(currentState.id, currentState.pw).asObservable()
                 .map {
+                    print($0)
                     switch $0 {
                     case .ok:
+                        self.steps.accept(BPCheckStep.signInIsRequired)
                         return .setLogin
                     case .conflict:
                         return .notAuth
@@ -81,7 +83,6 @@ final class SignInReactor: Reactor, Stepper {
         case .setPw(let pw):
             newState.pw = pw
         case .setLogin:
-            steps.accept(BPCheckStep.signInIsRequired)
             newState.complete = true
         case .notAuth:
             newState.result = "아이디 또는 비밀번호가 잘못되었습니다"
