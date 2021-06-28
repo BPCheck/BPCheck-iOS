@@ -13,8 +13,8 @@ import RxSwift
 import RxCocoa
 import ReactorKit
 
-final class HomeViewController: UIViewController {
-
+final class HomeViewController: BaseViewController, View {
+    typealias Reactor = HomeReactor
     private let backImageView = UIImageView().then {
         $0.image = UIImage(named: "background")
     }
@@ -62,10 +62,19 @@ final class HomeViewController: UIViewController {
         $0.textColor = .white
     }
     
-    private let disposeBag = DisposeBag()
-    private let reactor = HomeReactor()
+    private var reactor = HomeReactor()
     private let loadData = PublishRelay<Void>()
     
+    init(_ reactor: Reactor) {
+        super.init()
+        
+        self.reactor = reactor
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -80,8 +89,6 @@ final class HomeViewController: UIViewController {
                 
         setupConstraint()
         managerTrait()
-        bind(reactor: reactor)
-        loadData.accept(())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -125,7 +132,7 @@ final class HomeViewController: UIViewController {
         
     }
     
-    private func setupConstraint() {
+    override func setupConstraint() {
         feedLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view.snp.top).offset(90)
             make.leading.equalTo(view.snp.leading).offset(27)

@@ -7,8 +7,10 @@
 
 import Foundation
 import ReactorKit
+import RxFlow
+import RxCocoa
 
-final class HighReactor: Reactor {
+final class HighReactor: Reactor, Stepper {
     
     enum Action {
         case refresh
@@ -26,7 +28,8 @@ final class HighReactor: Reactor {
     
     let initialState: State
     private let service = Service()
-    
+    var steps: PublishRelay<Step> = .init()
+
     init() {
         initialState = State(chart: [])
     }

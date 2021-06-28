@@ -10,9 +10,10 @@ import MSBBarChart
 import SnapKit
 import ReactorKit
 import RxCocoa
+import RxFlow
 
-class HighChartViewController: UIViewController {
-
+class HighChartViewController: BaseViewController, View {
+    typealias Reactor = HighReactor
     private let chartView = MSBBarChartView()
     private let titleLabel = UILabel().then {
         $0.text = "최고"
@@ -31,10 +32,19 @@ class HighChartViewController: UIViewController {
         $0.tintColor = .black
     }
     
-    private let disposeBag = DisposeBag()
-    private let reactor = LowReactor()
+    private var reactor = LowReactor()
     private let loadData = PublishRelay<Void>()
     private var allLow = [Int]()
+    
+    init(_ reactor: Reactor) {
+        super.init()
+        
+        self.reactor = reactor
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +55,6 @@ class HighChartViewController: UIViewController {
         view.addSubview(dismissButton)
         
         setupConstraint()
-        bind(reactor: reactor)
         loadData.accept(())
         
         changeView.rx.tap.subscribe(onNext: { _ in
@@ -65,7 +74,7 @@ class HighChartViewController: UIViewController {
         chartView.start()
     }
     
-    private func setupConstraint() {
+    override func setupConstraint() {
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view.snp.top).offset(140)
             make.leading.equalTo(view.snp.leading).offset(30)
@@ -93,9 +102,9 @@ class HighChartViewController: UIViewController {
         }
     }
     
-    func bind(reactor: LowReactor) {
+    func bind(reactor: HighReactor) {
         loadData.map {
-            LowReactor.Action.refresh
+            HighReactor.Action.refresh
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
@@ -115,9 +124,9 @@ class HighChartViewController: UIViewController {
             }).disposed(by: disposeBag)
     }
     
-    private func setupBarChart(_ data: [LowBp]) {
+    private func setupBarChart(_ data: [HighBp]) {
         for i in data {
-            allLow.append(Int(i.lowBp)!)
+            allLow.append(Int(i.highBp)!)
         }
         print(allLow)
         chartView.setDataEntries(values: allLow)

@@ -8,8 +8,10 @@
 import Foundation
 import ReactorKit
 import RxSwift
+import RxFlow
+import RxCocoa
 
-final class HomeReactor: Reactor {
+final class HomeReactor: Reactor, Stepper{    
     
     enum Action {
         case refresh
@@ -27,7 +29,8 @@ final class HomeReactor: Reactor {
     
     let initialState: State
     private let service = Service()
-    
+    var steps: PublishRelay<Step> = .init()
+
     init() {
         initialState = State(main: nil)
     }
@@ -37,6 +40,8 @@ final class HomeReactor: Reactor {
         case .refresh:
             return service.getMainFeed().asObservable()
                 .map { main, response in
+                    print(response)
+                    print(main)
                 switch response {
                 case .ok:
                     return .setMainFeed(main)

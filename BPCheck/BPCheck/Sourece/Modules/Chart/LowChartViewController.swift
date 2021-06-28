@@ -10,9 +10,9 @@ import MSBBarChart
 import SnapKit
 import ReactorKit
 import RxCocoa
-
-class LowChartViewController: UIViewController {
-
+import RxFlow
+class LowChartViewController: BaseViewController, View{
+    typealias Reactor = LowReactor
     private let chartView = MSBBarChartView()
     private let titleLabel = UILabel().then {
         $0.text = "최고"
@@ -31,10 +31,19 @@ class LowChartViewController: UIViewController {
         $0.tintColor = .black
     }
     
-    private let disposeBag = DisposeBag()
-    private let reactor = LowReactor()
+    private var reactor = LowReactor()
     private let loadData = PublishRelay<Void>()
     private var allLow = [Int]()
+    
+    init(_ reactor: Reactor) {
+        super.init()
+        
+        self.reactor = reactor
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +54,6 @@ class LowChartViewController: UIViewController {
         view.addSubview(dismissButton)
         
         setupConstraint()
-        bind(reactor: reactor)
         loadData.accept(())
         
         changeView.rx.tap.subscribe(onNext: { _ in
@@ -65,7 +73,7 @@ class LowChartViewController: UIViewController {
         chartView.start()
     }
     
-    private func setupConstraint() {
+    override func setupConstraint() {
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view.snp.top).offset(140)
             make.leading.equalTo(view.snp.leading).offset(30)
