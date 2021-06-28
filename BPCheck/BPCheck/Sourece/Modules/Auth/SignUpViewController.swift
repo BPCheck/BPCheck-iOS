@@ -107,7 +107,6 @@ class SignUpViewController: BaseViewController, View {
     }
     
     override func setupConstraint() {
-        
         logoView.snp.makeConstraints { (make) in
             make.centerX.equalTo(view)
             make.top.equalTo(view.frame.height / 8)

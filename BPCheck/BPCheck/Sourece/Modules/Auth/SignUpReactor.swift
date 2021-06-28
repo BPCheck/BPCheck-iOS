@@ -49,13 +49,18 @@ final class SignUpReactor: Reactor, Stepper {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .id(let id):
-            return Observable.concat([.just(Mutation.setID(id)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))])
+            return Observable.concat([.just(Mutation.setID(id)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))]).observeOn(MainScheduler.asyncInstance)
         case .pw(let pw):
-            return Observable.concat([.just(Mutation.setPw(pw)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))])
+            return Observable.concat([.just(Mutation.setPw(pw)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))]).observeOn(MainScheduler.asyncInstance)
         case .name(let name):
-            return Observable.concat([.just(Mutation.setName(name)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))])
+            return Observable.concat([.just(Mutation.setName(name)), .just(Mutation.isEmpty(!currentState.name.isEmpty && !currentState.id.isEmpty && !currentState.pw.isEmpty))]).observeOn(MainScheduler.asyncInstance)
         case .doneTap:
-            let request: Observable<Mutation> = service.signUp(currentState.id, currentState.name, currentState.pw).asObservable()
+            let id = self.currentState.id
+            let password = self.currentState.pw
+            let name = self.currentState.name
+            
+            return Observable.concat([
+            service.signUp(id, name, password).asObservable().distinctUntilChanged()
                 .map {
                     switch $0 {
                     case .ok:
@@ -66,7 +71,7 @@ final class SignUpReactor: Reactor, Stepper {
                         return .setError
                     }
                 }
-            return request
+            ])
         }
     }
     

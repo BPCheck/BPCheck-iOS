@@ -20,6 +20,7 @@ final class AppFlow: Flow {
     init(window: UIWindow, services: Service) {
         self.window = window
         self.services = services
+        window.rootViewController = UINavigationController()
     }
     
     func navigate(to step: Step) -> FlowContributors {
@@ -27,13 +28,13 @@ final class AppFlow: Flow {
         
         switch step {
         case .splashIsRequired:
-            return self.navigateToSignIn()
+            return navigateToSignIn()
         case .userIsSignIn:
-            return self.navigateToSignUp()
+            return navigateToSignUp()
         case .dismiss:
-            return self.dismiss()
+            return dismiss()
         case .signInIsRequired:
-            return self.navigateToTabBar()
+            return navigateToTabBar()
         default:
             return .none
         }
@@ -56,7 +57,7 @@ extension AppFlow {
     private func navigateToTabBar() -> FlowContributors{
         let introFlow = TabBarFlow(services: services)
 
-        Flows.use(introFlow, when: .created) { [unowned self] root in
+        Flows.use(introFlow, when: .created) { [unowned self] (root: UITabBarController) in
             self.window.rootViewController = root
 
             UIView.transition(with: self.window,
@@ -66,7 +67,7 @@ extension AppFlow {
                               completion: nil)
         }
 
-        let nextStep = OneStepper(withSingleStep: BPCheckStep.homeIsRequired)
+        let nextStep = OneStepper(withSingleStep: BPCheckStep.tabBarIsRequired)
         return .one(flowContributor: .contribute(withNextPresentable: introFlow, withNextStepper: nextStep))
     }
     
@@ -79,7 +80,7 @@ extension AppFlow {
     }
     
     private func dismiss() -> FlowContributors {
-        self.window.rootViewController?.dismiss(animated: true, completion: nil)
+        self.window.rootViewController?.presentedViewController?.dismiss(animated: true, completion: nil)
         return .none
     }
 }
