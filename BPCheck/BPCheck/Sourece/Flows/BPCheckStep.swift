@@ -14,6 +14,8 @@ enum BPCheckStep: Step {
     
     case signInIsRequired
     case homeIsRequired
+    case hospitalIsRequired
+    case tabBarIsRequired
     case userIsSignIn
     
     case lowChartIsRequired
