@@ -16,5 +16,5 @@ struct Home: Codable {
 }
 
 struct Main: Codable {
-    let main: Home
+    let main: Home?
 }
