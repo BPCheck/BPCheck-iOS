@@ -11,11 +11,12 @@ import SnapKit
 import ReactorKit
 import RxCocoa
 import RxFlow
-class LowChartViewController: BaseViewController, View{
+
+final class LowChartViewController: BaseViewController, View{
     typealias Reactor = LowReactor
     private let chartView = MSBBarChartView()
     private let titleLabel = UILabel().then {
-        $0.text = "최고"
+        $0.text = "최저"
         $0.font = UIFont.boldSystemFont(ofSize: 40)
     }
     private let changeView = UIButton().then {
@@ -31,7 +32,6 @@ class LowChartViewController: BaseViewController, View{
         $0.tintColor = .black
     }
     
-    private var reactor = LowReactor()
     private let loadData = PublishRelay<Void>()
     private var allLow = [Int]()
     
@@ -55,14 +55,6 @@ class LowChartViewController: BaseViewController, View{
         
         setupConstraint()
         loadData.accept(())
-        
-        changeView.rx.tap.subscribe(onNext: { _ in
-            self.pushViewController("tableChart")
-        }).disposed(by: disposeBag)
-        
-        dismissButton.rx.tap.subscribe(onNext: { _ in
-            self.navigationController?.popViewController(animated: true)
-        }).disposed(by: disposeBag)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -84,7 +76,7 @@ class LowChartViewController: BaseViewController, View{
             make.leading.equalTo(view)
             make.trailing.equalTo(view)
             make.width.equalTo(view.snp.width)
-            make.height.equalTo(500)
+            make.height.equalTo(400)
         }
         
         changeView.snp.makeConstraints { (make) in
@@ -102,14 +94,25 @@ class LowChartViewController: BaseViewController, View{
     }
     
     func bind(reactor: LowReactor) {
-        loadData.map {
+        rx.viewDidLoad.map {
             LowReactor.Action.refresh
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        dismissButton.rx.tap.map {
+            LowReactor.Action.popVC
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        changeView.rx.tap.map {
+            LowReactor.Action.allChart
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
         reactor.state
             .map { $0.chart }
             .bind {[unowned self] data in
+                print(data)
                 chartView.setOptions([.yAxisTitle("LowBP"), .yAxisNumberOfInterval(8)])
                 chartView.layoutSubviews()
                 chartView.start()

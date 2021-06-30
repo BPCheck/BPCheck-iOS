@@ -32,8 +32,6 @@ class HighChartViewController: BaseViewController, View {
         $0.tintColor = .black
     }
     
-    private var reactor = LowReactor()
-    private let loadData = PublishRelay<Void>()
     private var allLow = [Int]()
     
     init(_ reactor: Reactor) {
@@ -55,20 +53,6 @@ class HighChartViewController: BaseViewController, View {
         view.addSubview(dismissButton)
         
         setupConstraint()
-        loadData.accept(())
-        
-        changeView.rx.tap.subscribe(onNext: { _ in
-            self.pushViewController("tableChart")
-        }).disposed(by: disposeBag)
-        
-        dismissButton.rx.tap.subscribe(onNext: { _ in
-            self.navigationController?.popViewController(animated: true)
-        }).disposed(by: disposeBag)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
         title = "최고 혈압 모음"
         chartView.layoutSubviews()
         chartView.start()
@@ -85,7 +69,7 @@ class HighChartViewController: BaseViewController, View {
             make.leading.equalTo(view)
             make.trailing.equalTo(view)
             make.width.equalTo(view.snp.width)
-            make.height.equalTo(300)
+            make.height.equalTo(400)
         }
         
         changeView.snp.makeConstraints { (make) in
@@ -103,14 +87,25 @@ class HighChartViewController: BaseViewController, View {
     }
     
     func bind(reactor: HighReactor) {
-        loadData.map {
+        rx.viewDidLoad.map {
             HighReactor.Action.refresh
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        dismissButton.rx.tap.map {
+            HighReactor.Action.popVC
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        changeView.rx.tap.map {
+            HighReactor.Action.allChart
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
         reactor.state
             .map { $0.chart }
             .bind {[unowned self] data in
+                print(data)
                 chartView.setOptions([.yAxisTitle("LowBP"), .yAxisNumberOfInterval(8)])
                 chartView.layoutSubviews()
                 chartView.start()
@@ -128,7 +123,6 @@ class HighChartViewController: BaseViewController, View {
         for i in data {
             allLow.append(Int(i.highBp)!)
         }
-        print(allLow)
         chartView.setDataEntries(values: allLow)
     }
 }

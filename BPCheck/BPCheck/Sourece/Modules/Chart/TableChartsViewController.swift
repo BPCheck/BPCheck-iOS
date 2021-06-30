@@ -11,8 +11,8 @@ import Then
 import ReactorKit
 import RxCocoa
 
-class TableChartsViewController: UIViewController {
-
+class TableChartsViewController: BaseViewController, View {
+    typealias Reactor = TableChartsReactor
     private let tableView = UITableView()
     
     private let titleLabel = UILabel().then {
@@ -31,11 +31,19 @@ class TableChartsViewController: UIViewController {
         $0.clipsToBounds = true
         $0.layer.cornerRadius = 19
     }
-    
-    private let disposeBag = DisposeBag()
-    private let reactor = TableChartsReactor()
-    private let loadData = PublishRelay<Void>()
 
+    private var loadData = PublishRelay<Bool>()
+
+    init(_ reactor: Reactor) {
+        super.init()
+        
+        self.reactor = reactor
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,17 +53,7 @@ class TableChartsViewController: UIViewController {
         view.addSubview(dismissButton)
         
         setupConstraint()
-        bind(reactor: reactor)
-        loadData.accept(())
         setupTableView()
-        
-        changeView.rx.tap.subscribe(onNext: { _ in
-            self.navigationController?.popViewController(animated: true)
-        }).disposed(by: disposeBag)
-        
-        dismissButton.rx.tap.subscribe(onNext: { _ in
-            self.navigationController?.popViewController(animated: true)
-        }).disposed(by: disposeBag)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,7 +62,7 @@ class TableChartsViewController: UIViewController {
         title = "모든 혈압 모음"
     }
     
-    private func setupConstraint() {
+    override func setupConstraint() {
         titleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(view.snp.top).offset(140)
             make.leading.equalTo(view.snp.leading).offset(30)
@@ -95,8 +93,23 @@ class TableChartsViewController: UIViewController {
     
     
     func bind(reactor: TableChartsReactor) {
+        rx.viewWillAppear.map {
+            TableChartsReactor.Action.refresh($0)
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
         loadData.map {
-            TableChartsReactor.Action.load
+            TableChartsReactor.Action.refresh($0)
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        dismissButton.rx.tap.map {
+            TableChartsReactor.Action.popVC
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        changeView.rx.tap.map {
+            TableChartsReactor.Action.popVC
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
@@ -115,7 +128,7 @@ class TableChartsViewController: UIViewController {
             .map { $0.result }
             .subscribe(onNext: { message in
                 if message == nil {
-                    self.loadData.accept(())
+                    self.loadData.accept((true))
                 }
             }).disposed(by: disposeBag)
     }

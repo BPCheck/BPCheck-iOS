@@ -7,12 +7,15 @@
 
 import Foundation
 import ReactorKit
+import RxFlow
+import RxCocoa
 
-final class TableChartsReactor: Reactor {
+final class TableChartsReactor: Reactor, Stepper {
     
     enum Action {
-        case load
+        case refresh(Bool)
         case deleteEnroll(IndexPath)
+        case popVC
     }
     
     enum Mutation {
@@ -29,14 +32,15 @@ final class TableChartsReactor: Reactor {
     
     let initialState: State
     private let service = Service()
-    
+    var steps: PublishRelay<Step> = .init()
+
     init() {
         initialState = State(chart: [])
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .load:
+        case .refresh:
             return service.getAllBp().asObservable()
                 .map { all, response in
                     switch response {
@@ -56,6 +60,9 @@ final class TableChartsReactor: Reactor {
                         return .setError("server error")
                     }
                 }
+        case .popVC:
+            steps.accept(BPCheckStep.popViewController)
+            return .empty()
         }
     }
     

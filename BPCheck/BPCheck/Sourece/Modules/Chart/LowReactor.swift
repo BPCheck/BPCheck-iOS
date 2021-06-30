@@ -14,6 +14,8 @@ final class LowReactor: Reactor, Stepper {
     
     enum Action {
         case refresh
+        case popVC
+        case allChart
     }
     
     enum Mutation {
@@ -46,6 +48,12 @@ final class LowReactor: Reactor, Stepper {
                         return .setError("")
                     }
                 }
+        case .popVC:
+            steps.accept(BPCheckStep.popViewController)
+            return .empty()
+        case .allChart:
+            steps.accept(BPCheckStep.allChartIsRequired)
+            return .empty()
         }
     }
     
