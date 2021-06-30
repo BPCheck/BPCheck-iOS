@@ -11,7 +11,8 @@ import RxCocoa
 
 class BaseViewController: UIViewController {
     var disposeBag: DisposeBag = .init()
-    
+    private(set) var didSetupConstraints = false
+
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -28,6 +29,14 @@ class BaseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func updateViewConstraints() {
+        if !self.didSetupConstraints {
+            self.setupConstraint()
+            self.didSetupConstraints = true
+        }
+        super.updateViewConstraints()
     }
     
     func setupConstraint() { }
