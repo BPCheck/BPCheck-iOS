@@ -53,6 +53,12 @@ class HighChartViewController: BaseViewController, View {
         view.addSubview(dismissButton)
         
         setupConstraint()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         title = "최고 혈압 모음"
         chartView.layoutSubviews()
         chartView.start()
@@ -107,9 +113,9 @@ class HighChartViewController: BaseViewController, View {
             .bind {[unowned self] data in
                 print(data)
                 chartView.setOptions([.yAxisTitle("LowBP"), .yAxisNumberOfInterval(8)])
+                setupBarChart(data)
                 chartView.layoutSubviews()
                 chartView.start()
-                setupBarChart(data)
             }.disposed(by: disposeBag)
         
         reactor.state

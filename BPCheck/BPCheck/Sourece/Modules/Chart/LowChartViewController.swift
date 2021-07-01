@@ -114,9 +114,9 @@ final class LowChartViewController: BaseViewController, View{
             .bind {[unowned self] data in
                 print(data)
                 chartView.setOptions([.yAxisTitle("LowBP"), .yAxisNumberOfInterval(8)])
+                setupBarChart(data)
                 chartView.layoutSubviews()
                 chartView.start()
-                setupBarChart(data)
             }.disposed(by: disposeBag)
         
         reactor.state
@@ -132,5 +132,4 @@ final class LowChartViewController: BaseViewController, View{
         }
         chartView.setDataEntries(values: allLow)
     }
-
 }
