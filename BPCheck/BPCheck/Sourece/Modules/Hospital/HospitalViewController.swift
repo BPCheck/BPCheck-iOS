@@ -11,16 +11,24 @@ import Then
 import ReactorKit
 import RxCocoa
 
-final class HospitalViewController: UIViewController {
-
+final class HospitalViewController: BaseViewController, View {
+    typealias Reactor = HospitalReactor
     private let hospitalTableView = UITableView()
-    private let reactor = HospitalReactor()
-    private let disposeBag = DisposeBag()
-    private let loadData = BehaviorRelay<Void>(value: ())
+    private let loadData = PublishRelay<Bool>()
     private var enrollHospital = PublishRelay<HospitalRegister>()
     
     lazy var enrollButton = UIBarButtonItem(title: "등록", style: .done, target: self, action: #selector(showEnroll))
     
+    init(_ reactor: Reactor) {
+        super.init()
+        
+        self.reactor = reactor
+    }
+    
+    required convenience init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,20 +36,17 @@ final class HospitalViewController: UIViewController {
                 
         setupTableView()
         setupConstraint()
-        bind(reactor: reactor)
-        loadData.accept(())
         hospitalTableView.tableFooterView = UIView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        loadData.accept(())
         hospitalTableView.separatorInset = .zero
         navigationItem.rightBarButtonItem = enrollButton
     }
     
-    private func setupConstraint() {
+    override func setupConstraint() {
         hospitalTableView.snp.makeConstraints { (make) in
             make.top.equalTo(view.snp.top)
             make.leading.equalTo(view)
@@ -51,8 +56,13 @@ final class HospitalViewController: UIViewController {
     }
     
     func bind(reactor: HospitalReactor) {
+        rx.viewWillAppear.map {
+            HospitalReactor.Action.refresh($0)
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
         loadData.map {
-            HospitalReactor.Action.load
+            HospitalReactor.Action.refresh($0)
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
@@ -88,7 +98,7 @@ final class HospitalViewController: UIViewController {
             .map { $0.result }
             .subscribe(onNext: { message in
                 if message == nil {
-                    self.loadData.accept(())
+                    self.loadData.accept((true))
                 }else if message != "text"{
                     self.showAlert(message!)
                 }
