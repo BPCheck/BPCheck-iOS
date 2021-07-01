@@ -55,9 +55,9 @@ extension AppFlow {
     }
     
     private func navigateToTabBar() -> FlowContributors{
-        let introFlow = TabBarFlow(services: services)
+        let tabBarFlow = TabBarFlow(services: services)
 
-        Flows.use(introFlow, when: .created) { [unowned self] (root: UITabBarController) in
+        Flows.use(tabBarFlow, when: .created) { [unowned self] (root: UITabBarController) in
             self.window.rootViewController = root
 
             UIView.transition(with: self.window,
@@ -68,7 +68,7 @@ extension AppFlow {
         }
 
         let nextStep = OneStepper(withSingleStep: BPCheckStep.tabBarIsRequired)
-        return .one(flowContributor: .contribute(withNextPresentable: introFlow, withNextStepper: nextStep))
+        return .one(flowContributor: .contribute(withNextPresentable: tabBarFlow, withNextStepper: nextStep))
     }
     
     private func navigateToSignUp() -> FlowContributors {
