@@ -22,13 +22,11 @@ final class HomeViewController: BaseViewController, View {
     private let bpHighView = MainFeedView().then {
         $0.textLabel.text = "최고"
         $0.iconLabel.image = UIImage(named: "high")
-        $0.contentLabel.text = "12"
     }
     
     private let bpLowView = MainFeedView().then {
         $0.textLabel.text = "최저"
         $0.iconLabel.image = UIImage(named: "low")
-        $0.contentLabel.text = "100"
     }
     
     private let pulseView = MainFeedView().then {
@@ -62,8 +60,7 @@ final class HomeViewController: BaseViewController, View {
         $0.textColor = .white
     }
     
-    private var reactor = HomeReactor()
-    private let loadData = PublishRelay<Void>()
+    private let loadData = BehaviorRelay<Void>(value: ())
     
     init(_ reactor: Reactor) {
         super.init()
@@ -95,24 +92,33 @@ final class HomeViewController: BaseViewController, View {
         super.viewWillAppear(animated)
         
         navigationController?.navigationBar.isHidden = true
-        loadData.accept(())
     }
     
-    func bind(reactor: HomeReactor) {
-        loadData.map {
-            HomeReactor.Action.refresh
+    func bind(reactor: Reactor) {
+        rx.viewWillAppear.map {
+            HomeReactor.Action.refresh($0)
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        bpLowView.rx.tap.map {
+            HomeReactor.Action.lowChart
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
+        bpHighView.rx.tap.map {
+            HomeReactor.Action.highChart
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
         reactor.state
             .map { $0.main }
             .bind {[unowned self] data in
-                guard let data = data else { return }
-                bpHighView.contentLabel.text = data.main.bps[0].highBp
-                bpLowView.contentLabel.text = data.main.bps[0].lowBp
-                pulseView.contentLabel.text = data.main.bps[0].pulse
-                hospitalView.contentLabel.text = data.main.hospitals[0].hospitalName
-                dateView.contentLabel.text = data.main.bps[0].date
+                guard let data = data?.main else { return }
+                bpHighView.contentLabel.text = data.bps[0].highBp
+                bpLowView.contentLabel.text = data.bps[0].lowBp
+                pulseView.contentLabel.text = data.bps[0].pulse
+                hospitalView.contentLabel.text = data.hospitals[0].hospitalName
+                dateView.contentLabel.text = data.bps[0].date
             }.disposed(by: disposeBag)
     }
     
@@ -121,15 +127,6 @@ final class HomeViewController: BaseViewController, View {
             let vc = storyboard?.instantiateViewController(identifier: "post") as! PostViewController
             presentPanModal(vc)
         }).disposed(by: disposeBag)
-        
-        bpLowView.rx.tap.subscribe(onNext: {[unowned self] _ in
-            pushViewController("low")
-        }).disposed(by: disposeBag)
-        
-        bpHighView.rx.tap.subscribe(onNext: {[unowned self] _ in
-            pushViewController("high")
-        }).disposed(by: disposeBag)
-        
     }
     
     override func setupConstraint() {
@@ -200,3 +197,4 @@ final class HomeViewController: BaseViewController, View {
         }
     }
 }
+

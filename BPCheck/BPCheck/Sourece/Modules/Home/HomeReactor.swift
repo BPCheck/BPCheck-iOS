@@ -14,7 +14,9 @@ import RxCocoa
 final class HomeReactor: Reactor, Stepper{    
     
     enum Action {
-        case refresh
+        case refresh(Bool)
+        case lowChart
+        case highChart
     }
     
     enum Mutation {
@@ -32,11 +34,17 @@ final class HomeReactor: Reactor, Stepper{
     var steps: PublishRelay<Step> = .init()
 
     init() {
-        initialState = State(main: nil)
+        initialState = State(main: nil, result: nil)
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
+        case .lowChart:
+            steps.accept(BPCheckStep.lowChartIsRequired)
+            return .empty()
+        case .highChart:
+            steps.accept(BPCheckStep.highChartIsRequired)
+            return .empty()
         case .refresh:
             return service.getMainFeed().asObservable()
                 .map { main, response in
