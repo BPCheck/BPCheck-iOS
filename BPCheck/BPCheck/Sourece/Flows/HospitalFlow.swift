@@ -14,8 +14,8 @@ final class HospitalFlow: Flow {
     private let services: Service
     
     private var rootViewController = UINavigationController().then {
-        $0.navigationController?.navigationBar.prefersLargeTitles = true
-        $0.title = "병원 목록"
+        $0.navigationBar.prefersLargeTitles = true
+        $0.navigationItem.title = "병원 목록"
     }
     
     var root: Presentable {
@@ -31,7 +31,7 @@ final class HospitalFlow: Flow {
         
         switch step {
         case .hospitalIsRequired:
-            return .none
+            return navigateToHospital()
         default:
             return .none
         }
@@ -43,6 +43,7 @@ extension HospitalFlow {
         let reactor = HospitalReactor()
         let viewController = HospitalViewController(reactor)
         
+        print("hospital")
         self.rootViewController.setViewControllers([viewController], animated: true)
 
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
