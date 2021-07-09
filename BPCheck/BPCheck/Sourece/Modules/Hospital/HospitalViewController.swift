@@ -22,6 +22,7 @@ final class HospitalViewController: BaseViewController, View {
     init(_ reactor: Reactor) {
         super.init()
         
+        self.title = "병원 목록"
         self.reactor = reactor
     }
     

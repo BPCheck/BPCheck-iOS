@@ -57,8 +57,8 @@ final class SignInReactor: Reactor, Stepper {
             return Observable.concat([.just(Mutation.setPw(pw)), .just(Mutation.isEmpty(!self.currentState.id.isEmpty && !self.currentState.pw.isEmpty))])
         case .doneTap:
             let request: Observable<Mutation> = service.signIn(currentState.id, currentState.pw).asObservable()
+                .distinctUntilChanged()
                 .map {
-                    print($0)
                     switch $0 {
                     case .ok:
                         self.steps.accept(BPCheckStep.signInIsRequired)

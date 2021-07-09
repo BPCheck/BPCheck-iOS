@@ -81,15 +81,15 @@ final class SignInViewController: BaseViewController, View {
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
-        signInBtn.rx.tap
-            .map{ SignInReactor.Action.doneTap }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+        signInBtn.rx.tap.map{
+            SignInReactor.Action.doneTap
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
         
-        signUpBtn.rx.tap
-            .map { SignInReactor.Action.signUp }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
+        signUpBtn.rx.tap.map {
+            SignInReactor.Action.signUp
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
         
         reactor.state
             .map { $0.result }
@@ -149,6 +149,4 @@ final class SignInViewController: BaseViewController, View {
             make.centerX.equalToSuperview()
         }
     }
-
 }
-

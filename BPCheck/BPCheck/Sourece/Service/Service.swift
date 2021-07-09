@@ -15,7 +15,6 @@ class Service: ServiceBasic {
 
     func signIn(_ userId: String,_ password: String) -> ReturnState {
         return provider.rx.request(.signIn(userId, password))
-            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map(Token.self)
@@ -27,7 +26,6 @@ class Service: ServiceBasic {
     
     func signUp(_ userId: String, _ name: String, _ password: String) -> ReturnState {
         return provider.rx.request(.signUp(userId, password, name))
-            .retry(3)
             .filterSuccessfulStatusCodes()
             .asObservable()
             .map { _ -> StatusRules in return (.ok) }
