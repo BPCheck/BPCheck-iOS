@@ -85,7 +85,6 @@ final class HomeViewController: BaseViewController, View {
         view.addSubview(feedLabel)
                 
         setupConstraint()
-        managerTrait()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +109,11 @@ final class HomeViewController: BaseViewController, View {
         }.bind(to: reactor.action)
         .disposed(by: disposeBag)
         
+        updateButton.rx.tap.map {
+            HomeReactor.Action.post
+        }.bind(to: reactor.action)
+        .disposed(by: disposeBag)
+        
         reactor.state
             .map { $0.main }
             .bind {[unowned self] data in
@@ -120,13 +124,6 @@ final class HomeViewController: BaseViewController, View {
                 hospitalView.contentLabel.text = data.hospitals[0].hospitalName
                 dateView.contentLabel.text = data.bps[0].date
             }.disposed(by: disposeBag)
-    }
-    
-    private func managerTrait() {
-        updateButton.rx.tap.subscribe(onNext: {[unowned self] _ in
-            let vc = storyboard?.instantiateViewController(identifier: "post") as! PostViewController
-            presentPanModal(vc)
-        }).disposed(by: disposeBag)
     }
     
     override func setupConstraint() {

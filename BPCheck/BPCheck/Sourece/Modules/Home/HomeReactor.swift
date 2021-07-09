@@ -17,6 +17,7 @@ final class HomeReactor: Reactor, Stepper{
         case refresh(Bool)
         case lowChart
         case highChart
+        case post
     }
     
     enum Mutation {
@@ -39,6 +40,9 @@ final class HomeReactor: Reactor, Stepper{
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
+        case .post:
+            steps.accept(BPCheckStep.presentPanModal)
+            return .empty()
         case .lowChart:
             steps.accept(BPCheckStep.lowChartIsRequired)
             return .empty()
