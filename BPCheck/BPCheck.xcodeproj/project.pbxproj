@@ -13,6 +13,7 @@
 		EB062AA5261607ED0040B4C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB062AA4261607ED0040B4C0 /* Assets.xcassets */; };
 		EB062AA8261607ED0040B4C0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EB062AA6261607ED0040B4C0 /* LaunchScreen.storyboard */; };
 		EB2C64B72689704E006EFF23 /* HomeFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2C64B62689704E006EFF23 /* HomeFlow.swift */; };
+		EB2C64B9268B395F006EFF23 /* UIViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2C64B8268B395E006EFF23 /* UIViewController+Rx.swift */; };
 		EB8CC4E02619521E0060FA5A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8CC4DF2619521E0060FA5A /* Token.swift */; };
 		EB8D55A3267991EA00D32812 /* HospitalFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB8D55A2267991EA00D32812 /* HospitalFlow.swift */; };
 		EB9227EA261853D00031F9E7 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB9227E9261853D00031F9E7 /* UIViewController.swift */; };
@@ -60,6 +61,7 @@
 		EB062AA7261607ED0040B4C0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EB062AA9261607ED0040B4C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB2C64B62689704E006EFF23 /* HomeFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlow.swift; sourceTree = "<group>"; };
+		EB2C64B8268B395E006EFF23 /* UIViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Rx.swift"; sourceTree = "<group>"; };
 		EB8CC4DF2619521E0060FA5A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
 		EB8D55A2267991EA00D32812 /* HospitalFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HospitalFlow.swift; sourceTree = "<group>"; };
 		EB9227E9261853D00031F9E7 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 			children = (
 				EB9227E9261853D00031F9E7 /* UIViewController.swift */,
 				EB973F1F2619624E005493A2 /* UITextField.swift */,
+				EB2C64B8268B395E006EFF23 /* UIViewController+Rx.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				EBB4DB612616D9CA001872B6 /* Color.swift in Sources */,
 				EB2C64B72689704E006EFF23 /* HomeFlow.swift in Sources */,
 				EBFD81AC263822A600B0362A /* PostReactor.swift in Sources */,
+				EB2C64B9268B395F006EFF23 /* UIViewController+Rx.swift in Sources */,
 				EB062A9C261607E80040B4C0 /* AppDelegate.swift in Sources */,
 				EB9227EA261853D00031F9E7 /* UIViewController.swift in Sources */,
 				EBB657D92619CE1500D75E51 /* HomeViewController.swift in Sources */,
