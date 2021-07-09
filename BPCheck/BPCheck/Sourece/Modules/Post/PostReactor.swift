@@ -8,8 +8,9 @@
 import Foundation
 import ReactorKit
 import RxCocoa
+import RxFlow
 
-final class PostReactor: Reactor {
+final class PostReactor: Reactor, Stepper {
     enum Action {
         case postBp(Bp)
     }
@@ -26,7 +27,8 @@ final class PostReactor: Reactor {
     
     let initialState: State
     private let service = Service()
-    
+    var steps: PublishRelay<Step> = .init()
+
     init() {
         initialState = State(isDismiss: false)
     }

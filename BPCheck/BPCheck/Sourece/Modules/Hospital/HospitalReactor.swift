@@ -7,10 +7,12 @@
 
 import Foundation
 import ReactorKit
+import RxFlow
+import RxCocoa
 
-final class HospitalReactor: Reactor {
+final class HospitalReactor: Reactor, Stepper {
     enum Action {
-        case load
+        case refresh(Bool)
         case didSelectHospital(IndexPath)
         case postFavoritHospital(HospitalRegister)
         case deleteFavoritHospital(IndexPath)
@@ -30,14 +32,15 @@ final class HospitalReactor: Reactor {
     
     let initialState: State
     private let service = Service()
-    
+    var steps: PublishRelay<Step> = .init()
+
     init() {
         initialState = State(hospital: [])
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .load:
+        case .refresh:
             return service.getHospital().asObservable()
                 .map { hospital, response in
                     print(response)
