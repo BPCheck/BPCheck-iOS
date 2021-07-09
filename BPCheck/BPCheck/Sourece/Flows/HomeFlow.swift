@@ -8,12 +8,14 @@
 import RxFlow
 import RxSwift
 import RxCocoa
+import PanModal
 
 final class HomeFlow: Flow {
     private let services: Service
     
     private var rootViewController = UINavigationController().then {
         $0.setNavigationBarHidden(true, animated: true)
+        $0.navigationBar.isHidden = true
     }
     
     var root: Presentable {
@@ -38,6 +40,8 @@ final class HomeFlow: Flow {
             return navigateToTableChart()
         case .popViewController:
             return navigateToPop()
+        case .presentPanModal:
+            return navigateToPresentPanModal()
         default:
             return .none
         }
@@ -83,6 +87,15 @@ extension HomeFlow {
         let viewController = TableChartsViewController(reactor)
         
         self.rootViewController.pushViewController(viewController, animated: true)
+        
+        return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
+    }
+    
+    private func navigateToPresentPanModal() -> FlowContributors {
+        let reactor = PostReactor()
+        let viewController = PostViewController()
+        
+        self.rootViewController.presentPanModal(viewController)
         
         return .one(flowContributor: .contribute(withNextPresentable: viewController, withNextStepper: reactor))
     }

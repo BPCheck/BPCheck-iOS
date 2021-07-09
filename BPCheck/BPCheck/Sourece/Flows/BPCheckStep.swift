@@ -21,6 +21,7 @@ enum BPCheckStep: Step {
     case lowChartIsRequired
     case highChartIsRequired
     case allChartIsRequired
+    case presentPanModal
     
     case alert(String)
 }
