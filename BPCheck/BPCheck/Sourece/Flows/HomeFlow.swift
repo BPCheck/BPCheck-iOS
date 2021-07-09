@@ -15,7 +15,8 @@ final class HomeFlow: Flow {
     
     private var rootViewController = UINavigationController().then {
         $0.setNavigationBarHidden(true, animated: true)
-        $0.navigationBar.isHidden = true
+        $0.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        $0.navigationBar.shadowImage = UIImage()
     }
     
     var root: Presentable {
