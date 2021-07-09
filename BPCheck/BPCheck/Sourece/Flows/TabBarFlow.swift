@@ -8,11 +8,12 @@
 import RxFlow
 import RxSwift
 import RxCocoa
+import Then
 
 final class TabBarFlow: Flow {
     private let services: Service
     
-    private var rootViewController: UITabBarController
+    private var rootViewController = UITabBarController()
     
     var root: Presentable {
         return rootViewController
@@ -53,7 +54,7 @@ extension TabBarFlow {
         return .multiple(flowContributors: [
             .contribute(withNextPresentable: homeFlow,
                         withNextStepper: OneStepper(withSingleStep: BPCheckStep.homeIsRequired)),
-            .contribute(withNextPresentable: homeFlow,
+            .contribute(withNextPresentable: hospitalFlow,
                         withNextStepper: OneStepper(withSingleStep: BPCheckStep.hospitalIsRequired))
         ])
     }
